@@ -2,9 +2,9 @@ package View;
 
 public class FlightBookingGUI {
 //i want to try yi xia see whether my git works anot - yj
-	//test
+		// xy test3
 	
-	public FlightBookingGUI() { //zy trying 2
+	public FlightBookingGUI() {
 		// TODO Auto-generated constructor stub
 	}
 }
