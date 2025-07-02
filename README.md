@@ -5,3 +5,16 @@ Project Member:
 4. CHAI YI JING (B032310827)
 5. LOH JIA YING (B032310401)
 6. NATALIE TAN WEI MEI (B032310844)
+
+Lecturer: Mohd Hariz Bin Naim @ Mohayat
+
+**Introduction**
+
+This project is for BITP3123 Distributed Application Development .....
+
+**Interface Design**
+
+**Database Design**
+
+**User Manual**
+//later add
