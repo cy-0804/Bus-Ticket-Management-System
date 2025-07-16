@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class FlightBookingGui {
+public class AdminLoginGUI {
 
 	private JFrame frame;
 
@@ -15,7 +15,7 @@ public class FlightBookingGui {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FlightBookingGui window = new FlightBookingGui();
+					AdminLoginGUI window = new AdminLoginGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class FlightBookingGui {
 	/**
 	 * Create the application.
 	 */
-	public FlightBookingGui() {
+	public AdminLoginGUI() {
 		initialize();
 	}
 
