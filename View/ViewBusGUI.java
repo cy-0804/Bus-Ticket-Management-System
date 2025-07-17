@@ -57,6 +57,7 @@ public class ViewBusGUI {
 
 	    model = new DefaultTableModel(new String[]{"Trip ID", "Departure", "Arrival", "From", "To", "Status", "Action"}, 0);
 	    table = new JTable(model);
+	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    table.getColumn("Status").setCellEditor(new DefaultCellEditor(new JComboBox<>(new String[]{
 	        "scheduled", "boarding", "delayed", "departed", "cancelled"
 	    })));
@@ -129,12 +130,34 @@ public class ViewBusGUI {
 	                "Update Status"
 	            });
 	        }
+
+	        resizeColumnWidths(table); // Auto-adjust columns
+
 	    } catch (IOException e) {
 	        JOptionPane.showMessageDialog(frame, "Connection failed: " + e.getMessage());
 	    } catch (JSONException e) {
 	        JOptionPane.showMessageDialog(frame, "Invalid data format from server.");
 	    } catch (Exception e) {
 	        JOptionPane.showMessageDialog(frame, "Unexpected error: " + e.getMessage());
+	    }
+	}
+
+	private void resizeColumnWidths(JTable table) {
+	    final TableColumnModel columnModel = table.getColumnModel();
+	    for (int column = 0; column < table.getColumnCount(); column++) {
+	        int width = 75; // Min width
+	        TableColumn tableColumn = columnModel.getColumn(column);
+	        TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
+	        Component headerComp = headerRenderer.getTableCellRendererComponent(table, tableColumn.getHeaderValue(), false, false, 0, 0);
+	        width = Math.max(headerComp.getPreferredSize().width, width);
+
+	        for (int row = 0; row < table.getRowCount(); row++) {
+	            TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+	            Component c = table.prepareRenderer(cellRenderer, row, column);
+	            width = Math.max(c.getPreferredSize().width + 10, width);
+	        }
+
+	        columnModel.getColumn(column).setPreferredWidth(width);
 	    }
 	}
 
@@ -163,7 +186,6 @@ public class ViewBusGUI {
 	            String newStatus = table.getValueAt(selectedRow, 5).toString();
 
 	            try {
-	                // Construct JSON payload
 	                JSONObject jsonPayload = new JSONObject();
 	                jsonPayload.put("tripID", tripID);
 	                jsonPayload.put("status", newStatus);
@@ -174,7 +196,6 @@ public class ViewBusGUI {
 	                conn.setRequestProperty("Content-Type", "application/json");
 	                conn.setDoOutput(true);
 
-	                // Send JSON data
 	                OutputStream os = conn.getOutputStream();
 	                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 	                writer.write(jsonPayload.toString());
@@ -218,5 +239,4 @@ public class ViewBusGUI {
 	        return super.stopCellEditing();
 	    }
 	}
-
 }
