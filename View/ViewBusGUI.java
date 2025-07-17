@@ -1,7 +1,6 @@
 package View;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
@@ -17,19 +16,9 @@ public class ViewBusGUI {
 	private DefaultTableModel model;
 	private JButton searchBtn;
 
-	public static void main(String[] args) {
-	    EventQueue.invokeLater(() -> {
-	        try {
-	            ViewBusGUI window = new ViewBusGUI();
-	            window.frame.setVisible(true);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    });
-	}
-
 	public ViewBusGUI() {
 	    initialize();
+	    frame.setVisible(true);
 	}
 
 	private void initialize() {
