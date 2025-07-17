@@ -134,7 +134,7 @@ public class LoginGUI {
 			if (status.equals("success")) {
 				JSONObject data = jsonResponse.getJSONObject("data");
 				String role = data.getString("role");
-				int userID = data.getInt("user_id");
+				int userID = data.getInt("user_id"); //userid
 				System.out.println("Login successful! Role: " + role);
 
 				if (role.equalsIgnoreCase("staff")) {
