@@ -164,6 +164,25 @@ public class CustomerPaymentGUI {
 
             if (response != null && response.toLowerCase().contains("success")) {
                 JOptionPane.showMessageDialog(frame, "Booking successful!");
+                
+             // Generate PDF ticket
+                String userHome = System.getProperty("user.home");
+                String filePath = userHome + "/Downloads/Ticket.pdf";
+                PDFTicketGenerator.generate(filePath, origin, destination, departDate, arrivalDate,
+                                            plateNo, String.format("%.2f", totalPrice), passengerForms);
+                
+                // Open the PDF
+                try {
+                    if (Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().open(new File(filePath));
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "PDF saved at: " + filePath);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Failed to open the PDF file.");
+                }
+                
                 frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(frame, "Booking failed: " + response);
@@ -175,7 +194,7 @@ public class CustomerPaymentGUI {
         }
     }
 
-    private static class PassengerForm {
+    public static class PassengerForm {
         JPanel panel;
         String seatID;
         String seatNum;
