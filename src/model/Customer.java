@@ -1,5 +1,6 @@
 package model;
 
+//model for customer
 public class Customer {
 	private User user;
 	//private int userID;

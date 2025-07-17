@@ -1,5 +1,6 @@
 package model;
 
+//model for seat
 public class Seat {
 	private int seatID;
 	private int seatNumber;

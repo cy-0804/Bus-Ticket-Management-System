@@ -10,7 +10,7 @@ public class Booking {
     private Payment payment;
     //private int bookedBy;
     //private int managedBy;
-    //private int paymentID;
+    //private int paymentID; 
     private LocalDateTime bookingDate;
     private double totalPrice;
     public Booking() {

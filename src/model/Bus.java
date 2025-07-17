@@ -1,5 +1,6 @@
 package model;
 
+//model for bus
 public class Bus {
 	private int busID;
     private String busNum;

@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 
+//model for payment
 public class Payment {
 	private int paymentID;
 	private LocalDateTime paymentDate;

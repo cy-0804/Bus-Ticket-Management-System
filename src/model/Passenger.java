@@ -1,5 +1,6 @@
 package model;
 
+//model for passenger
 public class Passenger {
 	private int passengerID;
     private String name;

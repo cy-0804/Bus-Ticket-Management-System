@@ -5,7 +5,7 @@ public class BookingSeats {
 	private Seat seat;
 	private Passenger passenger;
 	//private String bookingID;
-    //private int seatID;
+    //private int seatID; 
     //private int passengerID;
     private String checkin_status;
     
