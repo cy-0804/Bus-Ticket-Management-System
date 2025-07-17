@@ -132,16 +132,18 @@ public class LoginGUI {
 			String status = jsonResponse.getString("status");
 
 			if (status.equals("success")) {
-				String role = jsonResponse.getJSONObject("data").getString("role");
+				JSONObject data = jsonResponse.getJSONObject("data");
+				String role = data.getString("role");
+				int userID = data.getInt("user_id");
 				System.out.println("Login successful! Role: " + role);
 
 				if (role.equalsIgnoreCase("staff")) {
 					SwingUtilities.invokeLater(() -> {
-						new StaffDashboardGUI(); // assume this class opens its own window
+						new StaffDashboardGUI(); 
 					});
 				} else if (role.equalsIgnoreCase("customer")) {
 					SwingUtilities.invokeLater(() -> {
-						new CustomerDashboardGUI(); // assume this class opens its own window
+						new CustomerDashboardGUI(userID); 
 					});
 				}
 

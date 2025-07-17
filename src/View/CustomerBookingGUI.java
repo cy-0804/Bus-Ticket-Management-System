@@ -9,16 +9,23 @@ import java.util.*;
 import org.json.*;
 
 public class CustomerBookingGUI {
+	private String origin, destination, departDate, arrivalDate, plateNo;
     private Set<String> selectedSeatIDs = new HashSet<>();
     private double seatPrice;
-    private int tripID;
+    private int tripID, userID;
     private JFrame frame;
     private JPanel seatPanel, infoPanel;
 
-    public CustomerBookingGUI(int tripID, String origin, String destination, String date,
+    public CustomerBookingGUI(int userID, int tripID, String origin, String destination,
                                String plateNo, String departure, String arrival, double price) {
-        this.tripID = tripID;
+        this.userID = userID;
+    	this.tripID = tripID;
+    	this.origin = origin;
+    	this.destination = destination;
+    	this.departDate = departure;
+    	this.arrivalDate = arrival;
         this.seatPrice = price;
+        this.plateNo = plateNo;
 
         frame = new JFrame("Seat Selection and Booking");
         frame.setSize(700, 500);
@@ -99,7 +106,7 @@ public class CustomerBookingGUI {
             confirmBtn.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
 
             confirmBtn.addActionListener(e -> {
-                new CustomerPaymentGUI(tripID, selectedSeatIDs, seatPrice * selectedSeatIDs.size());
+                new CustomerPaymentGUI(userID, tripID, selectedSeatIDs, seatPrice * selectedSeatIDs.size(), origin, destination, departDate, arrivalDate, plateNo);
                 frame.dispose();
             });
 

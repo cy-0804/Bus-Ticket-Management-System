@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import org.json.*;
 
 public class CustomerPaymentGUI {
-    private int tripID;
+    private int tripID, userID;
+    private String origin, destination, departDate, arrivalDate, plateNo;
     private Set<String> seatIDs;
     private double totalPrice;
     private JFrame frame;
@@ -19,40 +20,53 @@ public class CustomerPaymentGUI {
     private List<PassengerForm> passengerForms = new ArrayList<>();
     private JComboBox<String> paymentMethodBox;
 
-    public CustomerPaymentGUI(int tripID, Set<String> seatIDs, double totalPrice) {
-        this.tripID = tripID;
+    public CustomerPaymentGUI(int userID, int tripID, Set<String> seatIDs, double totalPrice, String origin,
+    							String destination, String departDate, String arrivalDate, String plateNo) {
+        this.userID = userID;
+    	this.tripID = tripID;
         this.seatIDs = seatIDs;
         this.totalPrice = totalPrice;
+        this.origin = origin;
+        this.destination = destination;
+        this.departDate = departDate;
+        this.arrivalDate = arrivalDate;
+        this.plateNo = plateNo;
 
         frame = new JFrame("Payment");
         frame.setSize(600, 700);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.getContentPane().setBackground(new Color(240, 248, 255));
-        frame.setLayout(new BorderLayout());
 
-        // Title
+        JPanel contentPane = new JPanel(new BorderLayout());
+        contentPane.setBackground(new Color(130, 182, 234));
+        frame.setContentPane(contentPane);
+
         JLabel title = new JLabel("CONFIRM BOOKING & PAYMENT", JLabel.CENTER);
         title.setForeground(new Color(0, 64, 128));
         title.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.PLAIN, 24));
-        frame.add(title, BorderLayout.NORTH);
+        title.setOpaque(true);
+        title.setBackground(new Color(130, 182, 234));
+        contentPane.add(title, BorderLayout.NORTH);
 
-        // Container Panel with vertical layout
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        container.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        container.setBackground(new Color(240, 248, 255));
+        container.setBackground(new Color(130, 182, 234));
+        container.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
         // Booking summary
-        JPanel bookingInfoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        bookingInfoPanel.setBackground(new Color(240, 248, 255));
-        bookingInfoPanel.add(new JLabel("Trip ID: " + tripID));
+        JPanel bookingInfoPanel = new JPanel(new GridLayout(7, 1, 5, 5));
+        bookingInfoPanel.setBackground(new Color(130, 182, 234));
+        bookingInfoPanel.add(new JLabel("Origin: " + origin));
+        bookingInfoPanel.add(new JLabel("Destination: " + destination));
+        bookingInfoPanel.add(new JLabel("Depart Date: " + departDate));
+        bookingInfoPanel.add(new JLabel("Arrival Date: " + arrivalDate));
+        bookingInfoPanel.add(new JLabel("Bus Plate No: " + plateNo));
         bookingInfoPanel.add(new JLabel("Selected Seats: " + String.join(", ", seatIDs)));
         bookingInfoPanel.add(new JLabel("Total Price: RM " + String.format("%.2f", totalPrice)));
         container.add(bookingInfoPanel);
-        container.add(Box.createVerticalStrut(10));
+        container.add(Box.createVerticalStrut(15));
 
-        // Passenger form(s)
+        // Passenger forms
         for (String seatID : seatIDs) {
             PassengerForm pf = new PassengerForm(seatID);
             passengerForms.add(pf);
@@ -60,33 +74,39 @@ public class CustomerPaymentGUI {
             container.add(Box.createVerticalStrut(10));
         }
 
-        // Payment method
+        // Payment method selection
         JPanel paymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        paymentPanel.setBackground(new Color(240, 248, 255));
+        paymentPanel.setBackground(new Color(130, 182, 234));
         paymentPanel.add(new JLabel("Payment Method: "));
-        paymentMethodBox = new JComboBox<>(new String[]{"-- Select Method--","Credit Card/Debit Card", "Online Banking"});
+        paymentMethodBox = new JComboBox<>(new String[]{"-- Select Method --", "card", "bank"});
         paymentPanel.add(paymentMethodBox);
         container.add(paymentPanel);
 
-        // Pay button
+        // Confirm button
         JButton payButton = new JButton("Pay & Confirm Booking");
-        payButton.setFocusPainted(false);
-        payButton.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 14));
         payButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        payButton.setFocusPainted(false);
+        payButton.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
         payButton.addActionListener(e -> sendBookingRequest());
         container.add(Box.createVerticalStrut(10));
         container.add(payButton);
 
-        // Scroll pane
+        // Scroll pane for form container
         JScrollPane scrollPane = new JScrollPane(container);
         scrollPane.setBorder(null);
-        frame.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.getViewport().setBackground(new Color(130, 182, 234));
+        contentPane.add(scrollPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
 
     private void sendBookingRequest() {
         try {
+            if (paymentMethodBox.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(frame, "Please select a payment method.");
+                return;
+            }
+
             JSONArray seatArray = new JSONArray();
             JSONArray passengerArray = new JSONArray();
 
@@ -95,6 +115,7 @@ public class CustomerPaymentGUI {
                     JOptionPane.showMessageDialog(frame, "Please fill in all fields for seat " + pf.seatID);
                     return;
                 }
+
                 seatArray.put(pf.seatID);
 
                 JSONObject p = new JSONObject();
@@ -111,8 +132,8 @@ public class CustomerPaymentGUI {
             bookingData.put("passengers", passengerArray);
             bookingData.put("paymentMethod", paymentMethodBox.getSelectedItem().toString());
             bookingData.put("totalPrice", totalPrice);
+            bookingData.put("bookedBy", userID);
 
-            // Send POST to PHP backend
             URL url = new URL("http://localhost/webServiceJSON/BookingRequest.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -124,8 +145,7 @@ public class CustomerPaymentGUI {
             os.flush();
             os.close();
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String response = in.readLine();
             in.close();
 
@@ -151,8 +171,7 @@ public class CustomerPaymentGUI {
 
         PassengerForm(String seatID) {
             this.seatID = seatID;
-            panel = new JPanel();
-            panel.setLayout(new GridLayout(2, 4, 10, 5));
+            panel = new JPanel(new GridLayout(2, 4, 10, 5));
             panel.setBorder(BorderFactory.createTitledBorder("Passenger for Seat " + seatID));
             panel.setBackground(Color.WHITE);
 
@@ -165,7 +184,6 @@ public class CustomerPaymentGUI {
             panel.add(nameField);
             panel.add(new JLabel("Gender:"));
             panel.add(genderBox);
-
             panel.add(new JLabel("Tel No:"));
             panel.add(telField);
             panel.add(new JLabel("Age:"));
