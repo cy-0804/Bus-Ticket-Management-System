@@ -6,22 +6,27 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.*;
 
 public class CustomerPaymentGUI {
     private int tripID, userID;
     private String origin, destination, departDate, arrivalDate, plateNo;
-    private Set<String> seatIDs;
+    private List<Integer> seatIDs;
     private double totalPrice;
     private JFrame frame;
     private JPanel formPanel;
     private List<PassengerForm> passengerForms = new ArrayList<>();
     private JComboBox<String> paymentMethodBox;
+    private Map<Integer, String> seatIdToNumberMap = new HashMap<>();
 
-    public CustomerPaymentGUI(int userID, int tripID, Set<String> seatIDs, double totalPrice, String origin,
-    							String destination, String departDate, String arrivalDate, String plateNo) {
+    public CustomerPaymentGUI(int userID, int tripID, List<Integer> seatIDs, double totalPrice, String origin,
+    							String destination, String departDate, String arrivalDate, String plateNo, Map<Integer, String> seatIdToNumberMap) {
         this.userID = userID;
     	this.tripID = tripID;
         this.seatIDs = seatIDs;
@@ -31,6 +36,7 @@ public class CustomerPaymentGUI {
         this.departDate = departDate;
         this.arrivalDate = arrivalDate;
         this.plateNo = plateNo;
+        this.seatIdToNumberMap = seatIdToNumberMap;
 
         frame = new JFrame("Payment");
         frame.setSize(600, 700);
@@ -61,14 +67,17 @@ public class CustomerPaymentGUI {
         bookingInfoPanel.add(new JLabel("Depart Date: " + departDate));
         bookingInfoPanel.add(new JLabel("Arrival Date: " + arrivalDate));
         bookingInfoPanel.add(new JLabel("Bus Plate No: " + plateNo));
-        bookingInfoPanel.add(new JLabel("Selected Seats: " + String.join(", ", seatIDs)));
+        String seatStr = seatIDs.stream()
+        	    .map(id -> seatIdToNumberMap.getOrDefault(id, "Seat " + id))
+        	    .collect(Collectors.joining(", "));
+        	bookingInfoPanel.add(new JLabel("Selected Seats: " + seatStr));
         bookingInfoPanel.add(new JLabel("Total Price: RM " + String.format("%.2f", totalPrice)));
         container.add(bookingInfoPanel);
         container.add(Box.createVerticalStrut(15));
 
         // Passenger forms
-        for (String seatID : seatIDs) {
-            PassengerForm pf = new PassengerForm(seatID);
+        for (Integer seatID : seatIDs) {
+        	PassengerForm pf = new PassengerForm(String.valueOf(seatID), seatIdToNumberMap);
             passengerForms.add(pf);
             container.add(pf.panel);
             container.add(Box.createVerticalStrut(10));
@@ -78,7 +87,7 @@ public class CustomerPaymentGUI {
         JPanel paymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         paymentPanel.setBackground(new Color(130, 182, 234));
         paymentPanel.add(new JLabel("Payment Method: "));
-        paymentMethodBox = new JComboBox<>(new String[]{"-- Select Method --", "card", "bank"});
+        paymentMethodBox = new JComboBox<>(new String[]{"-- Select Method --", "card", "online"});
         paymentPanel.add(paymentMethodBox);
         container.add(paymentPanel);
 
@@ -107,28 +116,32 @@ public class CustomerPaymentGUI {
                 return;
             }
 
-            JSONArray seatArray = new JSONArray();
+            //JSONArray seatArray = new JSONArray();
             JSONArray passengerArray = new JSONArray();
 
-            for (PassengerForm pf : passengerForms) {
+            for (int i = 0; i < passengerForms.size(); i++) {
+                PassengerForm pf = passengerForms.get(i);
                 if (!pf.isFilled()) {
-                    JOptionPane.showMessageDialog(frame, "Please fill in all fields for seat " + pf.seatID);
+                	JOptionPane.showMessageDialog(frame, "Please fill in all fields for seat " + pf.seatNum);
                     return;
                 }
-
-                seatArray.put(pf.seatID);
 
                 JSONObject p = new JSONObject();
                 p.put("name", pf.nameField.getText());
                 p.put("gender", pf.genderBox.getSelectedItem().toString());
                 p.put("telNo", pf.telField.getText());
                 p.put("age", Integer.parseInt(pf.ageField.getText()));
+
+                // each passenger gets their seatID in an array
+                JSONArray seatArray = new JSONArray();
+                seatArray.put(Integer.parseInt(pf.seatID));
+                p.put("seatIDs", seatArray);
+
                 passengerArray.put(p);
             }
 
             JSONObject bookingData = new JSONObject();
             bookingData.put("tripID", tripID);
-            bookingData.put("seatIDs", seatArray);
             bookingData.put("passengers", passengerArray);
             bookingData.put("paymentMethod", paymentMethodBox.getSelectedItem().toString());
             bookingData.put("totalPrice", totalPrice);
@@ -162,17 +175,18 @@ public class CustomerPaymentGUI {
         }
     }
 
-    // Inner class for each passenger form
     private static class PassengerForm {
         JPanel panel;
         String seatID;
+        String seatNum;
         JTextField nameField, telField, ageField;
         JComboBox<String> genderBox;
 
-        PassengerForm(String seatID) {
+        PassengerForm(String seatID, Map<Integer, String> seatIdToNumberMap) {
             this.seatID = seatID;
+            this.seatNum = seatIdToNumberMap.getOrDefault(Integer.parseInt(seatID), "Seat " + seatID);
             panel = new JPanel(new GridLayout(2, 4, 10, 5));
-            panel.setBorder(BorderFactory.createTitledBorder("Passenger for Seat " + seatID));
+            panel.setBorder(BorderFactory.createTitledBorder("Passenger for Seat " + seatNum));
             panel.setBackground(Color.WHITE);
 
             nameField = new JTextField();
