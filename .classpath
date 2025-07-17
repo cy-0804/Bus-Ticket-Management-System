@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/kotlin-stdlib-common-1.9.10.jar"/>
 	<classpathentry kind="lib" path="lib/kotlin-stdlib-jdk8-1.9.10.jar"/>
 	<classpathentry kind="lib" path="lib/okhttp-3.14.9.jar"/>
+	<classpathentry kind="lib" path="lib/okio-1.17.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
