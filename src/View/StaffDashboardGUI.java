@@ -22,6 +22,7 @@ public class StaffDashboardGUI {
 
 	public StaffDashboardGUI() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	private void initialize() {
