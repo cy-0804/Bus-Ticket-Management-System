@@ -89,5 +89,18 @@ public class StaffDashboardGUI {
 				}
 			});
 		});
+		
+		//action listener for manual booking
+		ticketBookingBtn.addActionListener(e -> {
+			EventQueue.invokeLater(() -> {
+				try {
+					new StaffBookingTicketGUI(userID); // ✅ Correct instantiation
+					frame.dispose(); // Optional: close current window
+				} catch(Exception exp) {
+					exp.printStackTrace();
+				}
+			});
+		});
+
 	}
 }
