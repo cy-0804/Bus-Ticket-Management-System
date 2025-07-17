@@ -12,8 +12,13 @@ import java.util.Scanner;
 public class checkInController {
 
 	//depends
+<<<<<<< HEAD
     private static final String CHECKIN_INFO_URL = "http://localhost/get_booking_info.php";
     private static final String UPDATE_STATUS_URL = "http://localhost/checkin(1).php";
+=======
+    private static final String CHECKIN_INFO_URL = "http://localhost/webServiceJSON/get_booking_info.php";
+    private static final String UPDATE_STATUS_URL = "http://localhost/webServiceJSON/checkin(1).php";
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
 
     public static JSONObject getCheckInInfo(String bookingID) {
         try {
@@ -49,8 +54,47 @@ public class checkInController {
 				e1.printStackTrace();
 			}
             return error;
+<<<<<<< HEAD
+=======
         }
     }
+
+    public static JSONObject updateCheckInStatus(String bookingID) {
+        try {
+            URL url = new URL(UPDATE_STATUS_URL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            JSONObject jsonInput = new JSONObject();
+            jsonInput.put("booking_id", bookingID);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(jsonInput.toString().getBytes("UTF-8"));
+            }
+
+            InputStream responseStream = conn.getInputStream();
+            Scanner scanner = new Scanner(responseStream, "UTF-8").useDelimiter("\\A");
+            String responseBody = scanner.hasNext() ? scanner.next() : "";
+
+            return new JSONObject(responseBody);
+
+        } catch (Exception e) {
+            JSONObject error = new JSONObject();
+            try {
+				error.put("status", "fail");
+				error.put("message", e.getMessage());
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            return error;
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
+        }
+    }
+<<<<<<< HEAD
 
     public static JSONObject updateCheckInStatus(String bookingID) {
         try {
@@ -87,3 +131,6 @@ public class checkInController {
         }
     }
 }
+=======
+}
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git

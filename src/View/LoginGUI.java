@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 import java.awt.Font;
@@ -18,6 +19,7 @@ import java.util.Scanner;
 
 
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.json.JSONObject;
 
@@ -52,6 +54,7 @@ public class LoginGUI {
 	 */
 	public LoginGUI() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -131,7 +134,18 @@ public class LoginGUI {
 			if (status.equals("success")) {
 				String role = jsonResponse.getJSONObject("data").getString("role");
 				System.out.println("Login successful! Role: " + role);
-				// You can open a new window depending on the role
+
+				if (role.equalsIgnoreCase("staff")) {
+					SwingUtilities.invokeLater(() -> {
+						new StaffDashboardGUI(); // assume this class opens its own window
+					});
+				} else if (role.equalsIgnoreCase("customer")) {
+					SwingUtilities.invokeLater(() -> {
+						new CustomerDashboardGUI(); // assume this class opens its own window
+					});
+				}
+
+				frame.dispose(); // close login window
 			} else {
 				String message = jsonResponse.getString("message");
 				System.out.println("Login failed: " + message);

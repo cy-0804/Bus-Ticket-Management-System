@@ -22,6 +22,7 @@ public class StaffDashboardGUI {
 
 	public StaffDashboardGUI() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	private void initialize() {
@@ -51,6 +52,18 @@ public class StaffDashboardGUI {
 		viewBusScheduleBtn.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
 		viewBusScheduleBtn.setBounds(279, 264, 162, 39);
 		frame.getContentPane().add(viewBusScheduleBtn);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
+		btnBack.setBounds(594, 309, 85, 31);
+		frame.getContentPane().add(btnBack);
+		
+		btnBack.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            frame.dispose(); 
+	            new LoginGUI(); 
+	        }
+	    });
 		
 		passengerCheckInBtn.addActionListener(e -> {
 			EventQueue.invokeLater(() -> {
