@@ -6,10 +6,7 @@ public class BusStatusUpdateRequest {
 	private int tripId;
     private String status;
 
-    public BusStatusUpdateRequest(JSONObject json) {
-        this.tripId = json.optInt("trip_id");
-        this.status = json.optString("status");
-    }
+    public BusStatusUpdateRequest() {}
 
     public int getTripId() {
         return tripId;
