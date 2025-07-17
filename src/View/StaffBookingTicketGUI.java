@@ -25,23 +25,10 @@ public class StaffBookingTicketGUI {
 	private int selectedTripID = -1; // Initialize with an invalid ID
 	private double selectedPrice = 0.0;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					int testUserID = 1; // Example UserID for testing
-					StaffBookingTicketGUI window = new StaffBookingTicketGUI(testUserID);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public StaffBookingTicketGUI(int userID) {
 		this.userID = userID;
 		initialize();
+		frame.setVisible(true);
 	}
 
 	private void initialize() {
