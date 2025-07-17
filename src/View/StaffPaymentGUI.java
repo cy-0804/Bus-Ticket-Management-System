@@ -102,8 +102,8 @@ public class StaffPaymentGUI {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 if (jsonResponse.getString("status").equals("success")) {
                     String bookingID = jsonResponse.getString("bookingID");
-                    String passengerID = jsonResponse.getString("passengerID");
-                    String paymentID = jsonResponse.getString("paymentID");
+                    int passengerID = jsonResponse.getInt("passengerID");
+                    int paymentID = jsonResponse.getInt("paymentID");
 
                     JOptionPane.showMessageDialog(frame,
                             "Booking Confirmed!\nBooking ID: " + bookingID +
