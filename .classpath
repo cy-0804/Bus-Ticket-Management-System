@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
 		<attributes>
@@ -11,5 +12,13 @@
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/mysql-connector-java-5.1.22.jar"/>
+=======
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/mysql-connector-java-5.1.22.jar"/>
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>
