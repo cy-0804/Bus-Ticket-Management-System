@@ -1,5 +1,6 @@
 package model;
 
+//booking seat model
 public class BookingSeats {
 	private Booking booking;
 	private Seat seat;

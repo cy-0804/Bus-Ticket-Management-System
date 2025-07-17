@@ -1,6 +1,6 @@
 package model;
 
-//model for station
+//station model
 public class Station {
 	private int stationID;
 	public String stationName;

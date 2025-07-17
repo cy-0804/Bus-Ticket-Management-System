@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 
-//model for trip
+//trip model
 public class Trip {
 	//private int tripID;
 	//private int busID;

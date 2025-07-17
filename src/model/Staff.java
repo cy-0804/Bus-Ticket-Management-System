@@ -1,6 +1,6 @@
 package model;
 
-//model for staff
+//staff model
 public class Staff {
 	private User user;
 	//private int userID;

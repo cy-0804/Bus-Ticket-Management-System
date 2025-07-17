@@ -1,6 +1,6 @@
 package model;
 
-//model for user
+//user model
 public class User {
 	private int userId;
 	private String fullName;
