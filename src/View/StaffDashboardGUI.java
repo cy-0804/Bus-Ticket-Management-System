@@ -51,6 +51,17 @@ public class StaffDashboardGUI {
 		viewBusScheduleBtn.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
 		viewBusScheduleBtn.setBounds(279, 264, 162, 39);
 		frame.getContentPane().add(viewBusScheduleBtn);
+		
+		passengerCheckInBtn.addActionListener(e -> {
+			EventQueue.invokeLater(() -> {
+				try {
+					Staff_CheckInGUI checkin = new Staff_CheckInGUI();
+					frame.dispose(); 
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+		});
 
 		// ActionListener for View Bus Schedule
 		viewBusScheduleBtn.addActionListener(e -> {
