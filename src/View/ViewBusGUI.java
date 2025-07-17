@@ -102,7 +102,7 @@ public class ViewBusGUI {
 
 	private void loadTripData(String busID, String date) {
 	    try {
-	        URL url = new URL("http://localhost/webServiceJSON/searchTrips.php?busID=" + busID + "&date=" + date);
+	        URL url = new URL("http://localhost/webServiceJSON/staff_view_bus.php?busID=" + busID + "&date=" + date);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
 

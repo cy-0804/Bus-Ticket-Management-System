@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import java.io.InputStream;
 
 import javax.swing.JButton;
@@ -32,10 +31,6 @@ public class Staff_CheckInGUI {
 	private JFrame frame;
 	private JSONObject checkInData = null;
 
-
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,162 +44,134 @@ public class Staff_CheckInGUI {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Staff_CheckInGUI() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
-	    frame = new JFrame("Check-In Customer");
-	    frame.getContentPane().setBackground(new Color(130, 182, 234));
-	    frame.setBounds(100, 100, 742, 387);
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.getContentPane().setLayout(null);
+		frame = new JFrame("Check-In Customer");
+		frame.getContentPane().setBackground(new Color(130, 182, 234));
+		frame.setBounds(100, 100, 742, 387);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 
-	    JLabel lblBookingId = new JLabel("Enter Booking ID:");
-	    lblBookingId.setBounds(168, 46, 120, 25);
-	    frame.getContentPane().add(lblBookingId);
+		JLabel lblBookingId = new JLabel("Enter Booking ID:");
+		lblBookingId.setBounds(168, 46, 120, 25);
+		frame.getContentPane().add(lblBookingId);
 
-	    JTextField txtBookingId = new JTextField();
-	    txtBookingId.setBounds(278, 46, 177, 25);
-	    frame.getContentPane().add(txtBookingId);
+		JTextField txtBookingId = new JTextField();
+		txtBookingId.setBounds(278, 46, 177, 25);
+		frame.getContentPane().add(txtBookingId);
 
-	    JTextArea boardingPassArea = new JTextArea();
-	    boardingPassArea.setBounds(188, 81, 300, 156);
-	    boardingPassArea.setEditable(false);
-	    frame.getContentPane().add(boardingPassArea);
+		JTextArea boardingPassArea = new JTextArea();
+		boardingPassArea.setBounds(188, 81, 300, 156);
+		boardingPassArea.setEditable(false);
+		frame.getContentPane().add(boardingPassArea);
 
-	    JButton btnCheckin = new JButton("Check-In");
-	    btnCheckin.setBounds(278, 247, 120, 30);
-	    frame.getContentPane().add(btnCheckin);
+		JButton btnCheckin = new JButton("Check-In");
+		btnCheckin.setBounds(278, 247, 120, 30);
+		frame.getContentPane().add(btnCheckin);
 
-	    JButton btnGo = new JButton("Go");
-	    btnGo.setBounds(465, 48, 53, 21);
-	    frame.getContentPane().add(btnGo);
+		JButton btnGo = new JButton("Go");
+		btnGo.setBounds(465, 48, 53, 21);
+		frame.getContentPane().add(btnGo);
 
-	    JTextArea textArea = new JTextArea();
-	    textArea.setBackground(new Color(130, 182, 234));
-	    textArea.setBounds(288, 287, 255, 22);
-	    textArea.setEditable(false);
-	    frame.getContentPane().add(textArea);
+		JTextArea textArea = new JTextArea();
+		textArea.setBackground(new Color(130, 182, 234));
+		textArea.setBounds(288, 287, 255, 22);
+		textArea.setEditable(false);
+		frame.getContentPane().add(textArea);
 
-	    JButton btnBack = new JButton("Back");
-	    btnBack.setBackground(new Color(0, 255, 255));
-	    btnBack.setBounds(25, 10, 70, 21);
-	    frame.getContentPane().add(btnBack);
+		JButton btnBack = new JButton("Back");
+		btnBack.setBackground(new Color(0, 255, 255));
+		btnBack.setBounds(25, 10, 70, 21);
+		frame.getContentPane().add(btnBack);
 
-	    JButton btnPrint = new JButton(">>Print Boarding Pass");
-	    btnPrint.setBackground(new Color(130, 182, 234));
-	    btnPrint.setBounds(261, 319, 166, 21);
-	    btnPrint.setVisible(false); // only visible after successful check-in
-	    frame.getContentPane().add(btnPrint);
+		JButton btnPrint = new JButton(">>Print Boarding Pass");
+		btnPrint.setBackground(new Color(130, 182, 234));
+		btnPrint.setBounds(261, 319, 166, 21);
+		btnPrint.setVisible(false);
+		frame.getContentPane().add(btnPrint);
 
-	    frame.setVisible(true);
+		frame.setVisible(true);
 
-	    
-	    btnBack.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            frame.dispose(); 
-	            new StaffDashboardGUI(); 
-	        }
-	    });
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new StaffDashboardGUI();
+			}
+		});
 
-	    btnGo.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            String bookingId = txtBookingId.getText().trim();
-	            if (bookingId.isEmpty()) {
-	                JOptionPane.showMessageDialog(frame, "Please enter a booking ID.");
-	                return;
-	            }
+		btnGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String bookingId = txtBookingId.getText().trim();
+				if (bookingId.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "Please enter a booking ID.");
+					return;
+				}
 
-	            try {
-	                JSONObject response = checkInController.sendCheckIn(bookingId);
+				try {
+					JSONObject response = checkInController.getCheckInInfo(bookingId);
 
-	                if (response.getString("status").equals("success")) {
-	                	checkInData = response.getJSONObject("data");
-	                	JSONObject data = checkInData;
+					if (response.getString("status").equals("success")) {
+						if (response.has("data")) {
+							checkInData = response.getJSONObject("data");
+							JSONObject data = checkInData;
 
-	                    String tripID = data.getString("tripID");
-	                    String name = data.getString("passengerName");
-	                    String departStation = data.getString("from");
-	                    String arrivalStation = data.getString("to");
-	                    String departTime = data.getString("departureTime");
-	                    String arrivalTime = data.getString("arrivalTime");
-	                    String busPlate = data.getString("busPlate");
-	                    String seatNo = data.getString("seatNo");
+							String info =
+									"         ========= Check-in Info =========\n" +
+									String.format("\tTrip ID: %s\n", data.getInt("tripID")) +
+									String.format("\tPassenger Name: %s\n", data.getString("passengerName")) +
+									String.format("\tFrom: %s\n", data.getString("from")) +
+									String.format("\tTo: %s\n", data.getString("to")) +
+									String.format("\tDeparture: %s\n", data.getString("departureTime")) +
+									String.format("\tArrival: %s\n", data.getString("arrivalTime")) +
+									String.format("\tBus Plate No: %s\n", data.getString("busPlate")) +
+									String.format("\tSeat No: %s\n", data.getString("seatNo")) +
+									"        ==============================";
 
-	                    String info =
-	                            "         ========= Check-in Info =========\n" +
-	                            String.format("\tTrip ID: %s\n", tripID) +
-	                            String.format("\tPassenger Name: %s\n", name) +
-	                            String.format("\tFrom: %s\n", departStation) +
-	                            String.format("\tTo: %s\n", arrivalStation) +
-	                            String.format("\tDeparture: %s\n", departTime) +
-	                            String.format("\tArrival: %s\n", arrivalTime) +
-	                            String.format("\tBus Plate No: %s\n", busPlate) +
-	                            String.format("\tSeat No: %s\n", seatNo) +
-	                            "        ==============================";
+							boardingPassArea.setText(info);
+							textArea.setText("");
+						} else {
+							textArea.setText("Success: " + response.getString("message"));
+							boardingPassArea.setText("");
+						}
 
-	                    boardingPassArea.setText(info);
-	                    textArea.setText(""); // clear any error message
+					} else {
+						boardingPassArea.setText("");
+						textArea.setText("Error: " + response.getString("message"));
+					}
 
-	                } else {
-	                    // Server responded but booking not found or check-in failed
-	                    boardingPassArea.setText("");
-	                    textArea.setText("Error: " + response.getString("message"));
-	                }
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(frame, "Error retrieving booking data.");
+				}
+			}
+		});
 
-	            } catch (Exception ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(frame, "Error retrieving booking data.");
-	            }
-	        }
-	    });
+		//to update if check in
+		btnCheckin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String bookingId = txtBookingId.getText().trim();
+				if (bookingId.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "Please enter a booking ID.");
+					return;
+				}
 
-
-	    // Check-in: update DB and show status
-	    btnCheckin.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            String bookingId = txtBookingId.getText().trim();
-	            if (bookingId.isEmpty()) {
-	                JOptionPane.showMessageDialog(frame, "Please enter a booking ID.");
-	                return;
-	            }
-
-	            try {
-	                JSONObject response = checkInController.sendCheckIn(bookingId);
-	                if (response.getString("status").equals("success")) {
-	                    textArea.setText("Check-in successfully.");
-	                    btnPrint.setVisible(true); // enable printing
-
-	                    JSONObject data = response.getJSONObject("data");
-	                    String info = 
-	                            "         ========= Check-in Info =========\n" +
-	                            String.format("\tTrip ID: %s\n", data.getString("tripID")) +
-	                            String.format("\tPassenger Name: %s\n", data.getString("passengerName")) +
-	                            String.format("\tFrom: %s\n", data.getString("from")) +
-	                            String.format("\tTo: %s\n", data.getString("to")) +
-	                            String.format("\tDeparture: %s\n", data.getString("departureTime")) +
-	                            String.format("\tArrival: %s\n", data.getString("arrivalTime")) +
-	                            String.format("\tBus Plate No: %s\n", data.getString("busPlate")) +
-	                            String.format("\tSeat No: %s\n", data.getString("seatNo")) +
-	                            "        ==============================";
-	                    boardingPassArea.setText(info);
-
-	                } else {
-	                    textArea.setText("Check-in failed: " + response.getString("message"));
-	                }
-	            } catch (Exception ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(frame, "Error during check-in.");
-	            }
-	        }
-	    });
+				try {
+					JSONObject response = checkInController.updateCheckInStatus(bookingId);
+					if (response.getString("status").equals("success")) {
+						textArea.setText("Check-in successful.");
+						btnPrint.setVisible(true);
+					} else {
+						textArea.setText("Check-in failed: " + response.getString("message"));
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(frame, "Error during check-in.");
+				}
+			}
+		});
 
 
 	    // Print Boarding Pass

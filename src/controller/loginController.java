@@ -1,4 +1,4 @@
-package controller;
+/*package controller;
 
 import java.io.BufferedReader;
 
@@ -33,3 +33,4 @@ public class loginController {
         response.getWriter().write(result);
     }
 }
+*/
