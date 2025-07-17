@@ -30,6 +30,7 @@ public class Staff_CheckInGUI {
 
 	private JFrame frame;
 	private JSONObject checkInData = null;
+	private int userID;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -98,7 +99,7 @@ public class Staff_CheckInGUI {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				new StaffDashboardGUI();
+				new StaffDashboardGUI(userID);
 			}
 		});
 

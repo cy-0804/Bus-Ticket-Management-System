@@ -8,19 +8,21 @@ import java.awt.event.*;
 public class StaffDashboardGUI {
 
 	private JFrame frame;
+	private int userID;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				StaffDashboardGUI window = new StaffDashboardGUI();
-				window.frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(() -> {
+//			try {
+//				StaffDashboardGUI window = new StaffDashboardGUI();
+//				window.frame.setVisible(true);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//	}
 
-	public StaffDashboardGUI() {
+	public StaffDashboardGUI(int userID) {
+		this.userID=userID;
 		initialize();
 		frame.setVisible(true);
 	}

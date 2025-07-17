@@ -139,7 +139,7 @@ public class LoginGUI {
 
 				if (role.equalsIgnoreCase("staff")) {
 					SwingUtilities.invokeLater(() -> {
-						new StaffDashboardGUI(); 
+						new StaffDashboardGUI(userID); 
 					});
 				} else if (role.equalsIgnoreCase("customer")) {
 					SwingUtilities.invokeLater(() -> {

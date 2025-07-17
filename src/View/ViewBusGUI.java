@@ -19,6 +19,7 @@ public class ViewBusGUI {
 	private DefaultTableModel model;
 	private JButton searchBtn;
 	private JButton btnBack;
+	private int userID;
 
 	public ViewBusGUI() {
 	    initialize();
@@ -77,7 +78,7 @@ public class ViewBusGUI {
 	    btnBack.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            frame.dispose(); 
-	            new StaffDashboardGUI(); 
+	            new StaffDashboardGUI(userID); 
 	        }
 	    });
 
