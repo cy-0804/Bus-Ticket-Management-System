@@ -54,6 +54,7 @@ public class LoginGUI {
 	 */
 	public LoginGUI() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**

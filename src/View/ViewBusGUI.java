@@ -1,6 +1,9 @@
 package View;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
@@ -15,6 +18,7 @@ public class ViewBusGUI {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButton searchBtn;
+	private JButton btnBack;
 
 	public ViewBusGUI() {
 	    initialize();
@@ -64,6 +68,18 @@ public class ViewBusGUI {
 	    table.getColumn("Action").setCellRenderer(new ButtonRenderer());
 	    table.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox()));
 	    scrollPane.setViewportView(table);
+	    
+	    btnBack = new JButton("Back");
+	    btnBack.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
+	    btnBack.setBounds(784, 424, 65, 31);
+	    frame.getContentPane().add(btnBack);
+	    
+	    btnBack.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            frame.dispose(); 
+	            new StaffDashboardGUI(); 
+	        }
+	    });
 
 	    searchBtn.addActionListener(e -> {
 	        String busID = busIDTxt.getText().trim();

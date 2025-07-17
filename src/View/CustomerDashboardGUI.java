@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import javax.swing.JButton;
 
@@ -61,6 +63,18 @@ public class CustomerDashboardGUI {
 		btnViewTicket.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
 		btnViewTicket.setBounds(157, 151, 121, 38);
 		frame.getContentPane().add(btnViewTicket);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
+		btnBack.setBounds(347, 214, 65, 28);
+		frame.getContentPane().add(btnBack);
+		
+		btnBack.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            frame.dispose(); 
+	            new LoginGUI(); 
+	        }
+	    });
 	}
 
 }

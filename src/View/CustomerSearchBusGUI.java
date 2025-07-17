@@ -18,6 +18,7 @@ public class CustomerSearchBusGUI {
 	private JComboBox<String> destinationBox;
 	private JTextField departDateField; 
 	private JButton searchButton;
+	private JButton btnBack;
 
 	/**
 	 * Launch the application.
@@ -93,6 +94,18 @@ public class CustomerSearchBusGUI {
 		searchButton.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
 		searchButton.setBounds(400, 270, 100, 30);
 		frame.getContentPane().add(searchButton);
+		
+		btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
+		btnBack.setBounds(510, 270, 94, 30);
+		frame.getContentPane().add(btnBack);
+		
+		btnBack.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            frame.dispose(); 
+	            new CustomerDashboardGUI(); 
+	        }
+	    });
 
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
