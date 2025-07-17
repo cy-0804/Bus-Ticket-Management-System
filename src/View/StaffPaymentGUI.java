@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.JSONObject;
 
+//payment
 public class StaffPaymentGUI {
 
     private JFrame frame;
