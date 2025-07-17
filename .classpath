@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+=======
+<<<<<<< HEAD
+	<classpathentry kind="src" path="src"/>
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpclient.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpcore.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/commons-logging-1.2.jar"/>
@@ -22,4 +28,33 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/apache-httpcomponents-httpclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/apache-httpcomponents-httpcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/JSON jar files-20250424/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/mysql-connector-java-5.1.22.jar"/>
+=======
+	<classpathentry kind="src" path=""/>
+<<<<<<< HEAD
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/apache-httpcomponents-httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/apache-httpcomponents-httpcore.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/java-json.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.22.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/mysql-connector-java-5.1.22.jar"/>
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
+	<classpathentry kind="output" path="bin"/>
+>>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
 </classpath>
