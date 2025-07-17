@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import backEnd.CheckInRequest;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -173,7 +172,7 @@ public class Staff_CheckInGUI {
 
 	            try {
 	            	//boolean success = CheckInRequest.sendCheckIn("bookingId");
-	            	
+	            	Boolean success=true;
 	                if (success) {
 	                    textArea.setText("Check-in successfully.");
 	                    btnPrint.setVisible(true); 
