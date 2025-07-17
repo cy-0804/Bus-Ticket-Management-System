@@ -11,5 +11,10 @@
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/mysql-connector-java-5.1.22.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/mysql-connector-java-5.1.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
