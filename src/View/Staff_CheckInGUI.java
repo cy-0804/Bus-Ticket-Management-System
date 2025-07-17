@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.io.InputStream;
 
 import javax.swing.JButton;
@@ -17,9 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import controller.checkInController;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -30,6 +30,8 @@ import okhttp3.Response;
 public class Staff_CheckInGUI {
 
 	private JFrame frame;
+	private JSONObject checkInData = null;
+
 
 	/**
 	 * Launch the application.
@@ -121,38 +123,41 @@ public class Staff_CheckInGUI {
 	            }
 
 	            try {
-//	                String name = BookingModel.getBookingCustomerName(bookingId);
-//	                String departStation = BookingModel.getDepartStation(bookingId);
-//	                String arrivalStation = BookingModel.getArrivalStation(bookingId);
-//	                String departTime = BookingModel.getDepartTime(bookingId);
-//	                String arrivalTime = BookingModel.getArrivalTime(bookingId);
-//	                String busPlate = BookingModel.getBusPlateNo(bookingId);
-//	                String seatNo = BookingModel.getSeatNo(bookingId);
-//	                String tripID = BookingModel.getTripID(bookingId);
-	                
-	            	String name = "banana";
-	                String departStation = "Malaysia";
-	                String arrivalStation = "Singapore";
-	                String departTime = "0000";
-	                String arrivalTime = "2359";
-	                String busPlate = "ABC1234";
-	                String seatNo = "A01";
-	                String tripID = "B1234";
+	                JSONObject response = checkInController.sendCheckIn(bookingId);
 
+	                if (response.getString("status").equals("success")) {
+	                	checkInData = response.getJSONObject("data");
+	                	JSONObject data = checkInData;
 
-	                String info =
-	                        "         ========= Check-in Info =========\n" +
-	                        String.format("\tTrip ID: %s\n", tripID) +
-	                        String.format("\tPassenger Name: %s\n", name) +
-	                        String.format("\tFrom: %s\n", departStation) +
-	                        String.format("\tTo: %s\n", arrivalStation) +
-	                        String.format("\tDeparture: %s\n", departTime) +
-	                        String.format("\tArrival: %s\n", arrivalTime) +
-	                        String.format("\tBus Plate No: %s\n", busPlate) +
-	                        String.format("\tSeat No: %s\n", seatNo) +
-	                        "        ==============================";
+	                    String tripID = data.getString("tripID");
+	                    String name = data.getString("passengerName");
+	                    String departStation = data.getString("from");
+	                    String arrivalStation = data.getString("to");
+	                    String departTime = data.getString("departureTime");
+	                    String arrivalTime = data.getString("arrivalTime");
+	                    String busPlate = data.getString("busPlate");
+	                    String seatNo = data.getString("seatNo");
 
-	                boardingPassArea.setText(info);
+	                    String info =
+	                            "         ========= Check-in Info =========\n" +
+	                            String.format("\tTrip ID: %s\n", tripID) +
+	                            String.format("\tPassenger Name: %s\n", name) +
+	                            String.format("\tFrom: %s\n", departStation) +
+	                            String.format("\tTo: %s\n", arrivalStation) +
+	                            String.format("\tDeparture: %s\n", departTime) +
+	                            String.format("\tArrival: %s\n", arrivalTime) +
+	                            String.format("\tBus Plate No: %s\n", busPlate) +
+	                            String.format("\tSeat No: %s\n", seatNo) +
+	                            "        ==============================";
+
+	                    boardingPassArea.setText(info);
+	                    textArea.setText(""); // clear any error message
+
+	                } else {
+	                    // Server responded but booking not found or check-in failed
+	                    boardingPassArea.setText("");
+	                    textArea.setText("Error: " + response.getString("message"));
+	                }
 
 	            } catch (Exception ex) {
 	                ex.printStackTrace();
@@ -160,6 +165,7 @@ public class Staff_CheckInGUI {
 	            }
 	        }
 	    });
+
 
 	    // Check-in: update DB and show status
 	    btnCheckin.addActionListener(new ActionListener() {
@@ -171,14 +177,27 @@ public class Staff_CheckInGUI {
 	            }
 
 	            try {
-	            	//boolean success = CheckInRequest.sendCheckIn("bookingId");
-	            	Boolean success=true;
-	                if (success) {
+	                JSONObject response = checkInController.sendCheckIn(bookingId);
+	                if (response.getString("status").equals("success")) {
 	                    textArea.setText("Check-in successfully.");
-	                    btnPrint.setVisible(true); 
+	                    btnPrint.setVisible(true); // enable printing
+
+	                    JSONObject data = response.getJSONObject("data");
+	                    String info = 
+	                            "         ========= Check-in Info =========\n" +
+	                            String.format("\tTrip ID: %s\n", data.getString("tripID")) +
+	                            String.format("\tPassenger Name: %s\n", data.getString("passengerName")) +
+	                            String.format("\tFrom: %s\n", data.getString("from")) +
+	                            String.format("\tTo: %s\n", data.getString("to")) +
+	                            String.format("\tDeparture: %s\n", data.getString("departureTime")) +
+	                            String.format("\tArrival: %s\n", data.getString("arrivalTime")) +
+	                            String.format("\tBus Plate No: %s\n", data.getString("busPlate")) +
+	                            String.format("\tSeat No: %s\n", data.getString("seatNo")) +
+	                            "        ==============================";
+	                    boardingPassArea.setText(info);
 
 	                } else {
-	                	 textArea.setText("Check-in fail.");
+	                    textArea.setText("Check-in failed: " + response.getString("message"));
 	                }
 	            } catch (Exception ex) {
 	                ex.printStackTrace();
@@ -187,73 +206,100 @@ public class Staff_CheckInGUI {
 	        }
 	    });
 
+
 	    // Print Boarding Pass
 	    btnPrint.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
-	            try {
-	                OkHttpClient client = new OkHttpClient();
+	            new Thread(() -> {
+	                try {
+	                    OkHttpClient client = new OkHttpClient();
 
-	                String apiKey = "api_test_sfzZfbZbgXzKJajhk6";
-	                String apiSecret = "tZZsnM633eSbYn67jD7gDZj7bkcKae977LsAJzZnbt";
-	                String templateId = "tpl_LecfLcE5gn5hTrXHm9";
+	                    String apiKey = "api_test_sfzZfbZbgXzKJajhk6";
+	                    String apiSecret = "tZZsnM633eSbYn67jD7gDZj7bkcKae977LsAJzZnbt";
+	                    String templateId = "tpl_LecfLcE5gn5hTrXHm9";
 
-	                MediaType mediaType = MediaType.parse("application/json");
-	                String json = "{"
-	                	    + "\"data\": {"
-	                	        + "\"Passenger\": \"Banana\","
-	                	        + "\"Departure\": \"0000\","
-	                	        + "\"From\": \"Malaysia\","
-	                	        + "\"To\": \"Singapore\","
-	                	        + "\"Seat\": \"A01\","
-	                	        + "\"Bus\": \"ABC1234\","
-	                	        + "\"Ticket\": \"B1234\""
-	                	    + "},"
-	                	    + "\"test\": true"
-	                	+ "}";
+	                    MediaType mediaType = MediaType.parse("application/json");
+	                    if (checkInData == null) {
+	                        JOptionPane.showMessageDialog(null, "No boarding data to print.");
+	                        return;
+	                    }
+
+	                    String passenger = checkInData.optString("passengerName", "N/A");
+	                    String departure = checkInData.optString("departureTime", "N/A");
+	                    String from = checkInData.optString("from", "N/A");
+	                    String to = checkInData.optString("to", "N/A");
+	                    String seat = checkInData.optString("seatNo", "N/A");
+	                    String bus = checkInData.optString("busPlate", "N/A");
+	                    String ticket = checkInData.optString("tripID", "N/A");
+
+	                    String json = "{"
+	                        + "\"data\": {"
+	                        + "\"Passenger\": \"" + passenger + "\","
+	                        + "\"Departure\": \"" + departure + "\","
+	                        + "\"From\": \"" + from + "\","
+	                        + "\"To\": \"" + to + "\","
+	                        + "\"Seat\": \"" + seat + "\","
+	                        + "\"Bus\": \"" + bus + "\","
+	                        + "\"Ticket\": \"" + ticket + "\""
+	                        + "},"
+	                        + "\"test\": true"
+	                        + "}";
 
 
-	                RequestBody body = RequestBody.create(mediaType, json);
-	                Request request = new Request.Builder()
-	                    .url("https://api.docspring.com/api/v1/templates/" + templateId + "/submissions")
-	                    .post(body)
-	                    .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
-	                    .addHeader("Content-Type", "application/json")
-	                    .build();
+	                    RequestBody body = RequestBody.create(mediaType, json);
+	                    Request request = new Request.Builder()
+	                            .url("https://api.docspring.com/api/v1/templates/" + templateId + "/submissions")
+	                            .post(body)
+	                            .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
+	                            .addHeader("Content-Type", "application/json")
+	                            .build();
 
-	                Response response = client.newCall(request).execute();
-	                String responseBody = response.body().string();
+	                    Response response = client.newCall(request).execute();
+	                    String responseBody = response.body().string();
 
-	                if (response.isSuccessful()) {
 	                    JSONObject jsonObject = new JSONObject(responseBody);
+	                    if (!jsonObject.has("submission")) {
+	                        JOptionPane.showMessageDialog(null, "Error: 'submission' not found in response.");
+	                        return;
+	                    }
+
 	                    JSONObject submission = jsonObject.getJSONObject("submission");
 	                    String submissionId = submission.getString("id");
 
 	                    String state = "";
 	                    String pdfUrl = null;
 
+	                    // Polling loop
 	                    for (int i = 0; i < 10; i++) {
 	                        Request pollRequest = new Request.Builder()
-	                            .url("https://api.docspring.com/api/v1/submissions/" + submissionId)
-	                            .get()
-	                            .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
-	                            .build();
+	                                .url("https://api.docspring.com/api/v1/submissions/" + submissionId)
+	                                .get()
+	                                .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
+	                                .build();
 
 	                        Response pollResponse = client.newCall(pollRequest).execute();
 	                        String pollBody = pollResponse.body().string();
-	                        JSONObject pollJson = new JSONObject(pollBody);
-	                        JSONObject pollSubmission = pollJson.getJSONObject("submission");
 
-	                        state = pollSubmission.getString("state");
+	                        try {
+	                            JSONObject pollSubmission = new JSONObject(pollBody);
 
-	                        if (state.equals("success")) {
-	                            pdfUrl = pollSubmission.getString("download_url");
-	                            break;
-	                        } else if (state.equals("failed")) {
-	                            JOptionPane.showMessageDialog(null, "Submission failed during processing.");
+	                            state = pollSubmission.getString("state");
+
+	                            if (state.equals("success") || state.equals("processed")) {
+	                                pdfUrl = pollSubmission.optString("download_url");
+	                                break;
+	                            } else if (state.equals("failed")) {
+	                                JOptionPane.showMessageDialog(null, "PDF generation failed.");
+	                                return;
+	                            }
+
+	                        } catch (Exception parseEx) {
+	                            parseEx.printStackTrace();
+	                            JOptionPane.showMessageDialog(null, "Failed to parse poll response:\n" + pollBody);
 	                            return;
 	                        }
 
-	                        Thread.sleep(1000); // Wait before retry
+	                        Thread.sleep(1000);
 	                    }
 
 	                    if (pdfUrl != null && !pdfUrl.isEmpty()) {
@@ -276,31 +322,27 @@ public class Staff_CheckInGUI {
 
 	                            JOptionPane.showMessageDialog(null, "PDF downloaded successfully!");
 
-	                            // Preview the PDF
 	                            if (Desktop.isDesktopSupported()) {
 	                                Desktop.getDesktop().open(file);
 	                            } else {
 	                                JOptionPane.showMessageDialog(null, "Preview not supported on this system.");
 	                            }
-
 	                        } else {
 	                            JOptionPane.showMessageDialog(null, "Failed to download PDF.");
 	                        }
-
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "PDF not ready after polling.");
 	                    }
 
-	                } else {
-	                    JOptionPane.showMessageDialog(null, "Submission Failed:\n" + responseBody);
+	                } catch (Exception ex) {
+	                    ex.printStackTrace();
+	                    JOptionPane.showMessageDialog(null, "Error during submission or processing.");
 	                }
-
-	            } catch (Exception ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(null, "Error during submission.");
-	            }
+	            }).start();
 	        }
 	    });
+
+
 
 	}
 
