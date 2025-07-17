@@ -19,6 +19,7 @@ public class ViewBusGUI {
 	private DefaultTableModel model;
 	private JButton searchBtn;
 	private JButton btnBack;
+	private int userID;
 
 	public ViewBusGUI() {
 	    initialize();
@@ -77,7 +78,7 @@ public class ViewBusGUI {
 	    btnBack.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            frame.dispose(); 
-	            new StaffDashboardGUI(); 
+	            new StaffDashboardGUI(userID); 
 	        }
 	    });
 
@@ -147,7 +148,7 @@ public class ViewBusGUI {
 	            });
 	        }
 
-	        resizeColumnWidths(table); // Auto-adjust columns
+	        resizeColumnWidths(table);
 
 	    } catch (IOException e) {
 	        JOptionPane.showMessageDialog(frame, "Connection failed: " + e.getMessage());
@@ -161,7 +162,7 @@ public class ViewBusGUI {
 	private void resizeColumnWidths(JTable table) {
 	    final TableColumnModel columnModel = table.getColumnModel();
 	    for (int column = 0; column < table.getColumnCount(); column++) {
-	        int width = 75; // Min width
+	        int width = 75;
 	        TableColumn tableColumn = columnModel.getColumn(column);
 	        TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
 	        Component headerComp = headerRenderer.getTableCellRendererComponent(table, tableColumn.getHeaderValue(), false, false, 0, 0);
@@ -229,7 +230,15 @@ public class ViewBusGUI {
 	                }
 	                in.close();
 
-	                JSONObject responseJson = new JSONObject(response.toString());
+	                String responseText = response.toString().trim();
+	                System.out.println("Raw server response: " + responseText); // Debug line
+
+	                if (!responseText.startsWith("{")) {
+	                    JOptionPane.showMessageDialog(frame, "Invalid response from server:\n" + responseText);
+	                    return;
+	                }
+
+	                JSONObject responseJson = new JSONObject(responseText);
 	                if ("success".equalsIgnoreCase(responseJson.optString("status"))) {
 	                    JOptionPane.showMessageDialog(frame, responseJson.optString("message", "Trip updated."));
 	                    loadTripData(busIDTxt.getText(), DateTxt.getText());
