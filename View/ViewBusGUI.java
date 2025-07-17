@@ -165,7 +165,7 @@ public class ViewBusGUI {
 
 	    public ButtonEditor(JCheckBox checkBox) {
 	        super(checkBox);
-	        button = new JButton();
+	        button = new JButton("Update Status");
 	        button.setOpaque(true);
 	        button.addActionListener(e -> {
 	            fireEditingStopped();
@@ -174,33 +174,50 @@ public class ViewBusGUI {
 	            String newStatus = table.getValueAt(selectedRow, 5).toString();
 
 	            try {
+	                // Construct JSON payload
+	                JSONObject jsonPayload = new JSONObject();
+	                jsonPayload.put("tripID", tripID);
+	                jsonPayload.put("status", newStatus);
+
 	                URL url = new URL("http://localhost/webServiceJSON/bus_status_update.php");
 	                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	                conn.setRequestMethod("POST");
-	                conn.setDoOutput(true);
 	                conn.setRequestProperty("Content-Type", "application/json");
+	                conn.setDoOutput(true);
 
-	                String params = "tripID=" + tripID + "&status=" + URLEncoder.encode(newStatus, "UTF-8");
+	                // Send JSON data
 	                OutputStream os = conn.getOutputStream();
-	                os.write(params.getBytes());
-	                os.flush();
+	                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+	                writer.write(jsonPayload.toString());
+	                writer.flush();
+	                writer.close();
 	                os.close();
 
 	                int responseCode = conn.getResponseCode();
-	                if (responseCode == HttpURLConnection.HTTP_OK) {
-	                    JOptionPane.showMessageDialog(frame, "Trip status updated successfully.");
+	                InputStream is = (responseCode == 200) ? conn.getInputStream() : conn.getErrorStream();
+	                BufferedReader in = new BufferedReader(new InputStreamReader(is));
+	                StringBuilder response = new StringBuilder();
+	                String inputLine;
+	                while ((inputLine = in.readLine()) != null) {
+	                    response.append(inputLine);
+	                }
+	                in.close();
+
+	                JSONObject responseJson = new JSONObject(response.toString());
+	                if ("success".equalsIgnoreCase(responseJson.optString("status"))) {
+	                    JOptionPane.showMessageDialog(frame, responseJson.optString("message", "Trip updated."));
 	                    loadTripData(busIDTxt.getText(), DateTxt.getText());
 	                } else {
-	                    JOptionPane.showMessageDialog(frame, "Failed to update trip. Server responded: " + responseCode);
+	                    JOptionPane.showMessageDialog(frame, responseJson.optString("message", "Failed to update trip."));
 	                }
 	            } catch (Exception ex) {
 	                JOptionPane.showMessageDialog(frame, "Error updating trip: " + ex.getMessage());
+	                ex.printStackTrace();
 	            }
 	        });
 	    }
 
 	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	        button.setText("Update Status");
 	        return button;
 	    }
 

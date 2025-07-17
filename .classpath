@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
-	<classpathentry kind="lib" path="com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse-java-2024-12-R-win32-x86_64/eclipse/java-json.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse-java-2024-12-R-win32-x86_64/eclipse/mysql-connector-java-5.1.22.jar"/>
 	<classpathentry kind="lib" path="C:/Users/acy97/Downloads/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/acy97/Downloads/apache-httpcomponents-httpcore.jar"/>
 	<classpathentry kind="lib" path="C:/Users/acy97/Downloads/apache-httpcomponents-httpclient.jar"/>
-	<classpathentry kind="lib" path="D:/eclipse-java-2024-12-R-win32-x86_64/eclipse/java-json.jar"/>
-	<classpathentry kind="lib" path="D:/eclipse-java-2024-12-R-win32-x86_64/eclipse/mysql-connector-java-5.1.22.jar"/>
-=======
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpclient.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpcore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/mysql-connector-java-5.1.22.jar"/>
->>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticketing-System.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>
