@@ -46,7 +46,7 @@ public class StaffPaymentGUI {
         totalAmountField.setBackground(new Color(220, 220, 220));
 
         JLabel paymentLabel = new JLabel("Payment Method:");
-        paymentMethodBox = new JComboBox<>(new String[]{"Cash", "Credit Card", "Online Banking", "E-Wallet"});
+        paymentMethodBox = new JComboBox<>(new String[]{"Cash", "Card", "Online"});
 
         JButton submitButton = new JButton("Confirm Payment");
         submitButton.setBackground(new Color(70, 130, 180));
