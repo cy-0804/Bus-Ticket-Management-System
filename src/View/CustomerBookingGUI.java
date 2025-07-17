@@ -5,16 +5,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.*;
 
 public class CustomerBookingGUI {
 	private String origin, destination, departDate, arrivalDate, plateNo;
-    private Set<String> selectedSeatIDs = new HashSet<>();
+	private List<Integer> selectedSeatIDs = new ArrayList<>();
     private double seatPrice;
     private int tripID, userID;
     private JFrame frame;
     private JPanel seatPanel, infoPanel;
+    private Map<Integer, String> seatIdToNumberMap = new HashMap<>();
 
     public CustomerBookingGUI(int userID, int tripID, String origin, String destination,
                                String plateNo, String departure, String arrival, double price) {
@@ -71,7 +77,9 @@ public class CustomerBookingGUI {
 
             for (int i = 0; i < seats.length(); i++) {
                 JSONObject seat = seats.getJSONObject(i);
+                int seatID = seat.getInt("seatID");
                 String seatNumber = seat.getString("seatNumber");
+                seatIdToNumberMap.put(seatID, seatNumber);
                 String status = seat.getString("status");
 
                 JButton seatBtn = new JButton(seatNumber);
@@ -79,11 +87,11 @@ public class CustomerBookingGUI {
                 seatBtn.setEnabled(!status.equals("booked"));
 
                 seatBtn.addActionListener(e -> {
-                    if (selectedSeatIDs.contains(seatNumber)) {
-                        selectedSeatIDs.remove(seatNumber);
+                    if (selectedSeatIDs.contains(seatID)) {
+                        selectedSeatIDs.remove((Integer) seatID);
                         seatBtn.setBackground(Color.WHITE);
                     } else {
-                        selectedSeatIDs.add(seatNumber);
+                        selectedSeatIDs.add(seatID);
                         seatBtn.setBackground(Color.ORANGE);
                     }
                     updateInfoPanel();
@@ -100,13 +108,16 @@ public class CustomerBookingGUI {
         infoPanel.removeAll();
 
         if (!selectedSeatIDs.isEmpty()) {
-            JLabel selectedLabel = new JLabel("Selected Seats: " + String.join(", ", selectedSeatIDs));
+        	String seatListStr = selectedSeatIDs.stream()
+        		    .map(id -> seatIdToNumberMap.getOrDefault(id, "Seat " + id))
+        		    .collect(Collectors.joining(", "));
+        		JLabel selectedLabel = new JLabel("Selected Seats: " + seatListStr);
             JLabel priceLabel = new JLabel("Total Price: RM " + (selectedSeatIDs.size() * seatPrice));
             JButton confirmBtn = new JButton("Confirm & Proceed to Payment");
             confirmBtn.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
 
             confirmBtn.addActionListener(e -> {
-                new CustomerPaymentGUI(userID, tripID, selectedSeatIDs, seatPrice * selectedSeatIDs.size(), origin, destination, departDate, arrivalDate, plateNo);
+            	new CustomerPaymentGUI(userID, tripID, new ArrayList<>(selectedSeatIDs), seatPrice * selectedSeatIDs.size(), origin, destination, departDate, arrivalDate, plateNo, seatIdToNumberMap);
                 frame.dispose();
             });
 

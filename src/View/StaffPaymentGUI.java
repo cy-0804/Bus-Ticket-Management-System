@@ -2,42 +2,26 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.GroupLayout.Alignment;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.json.JSONObject;
 
 public class StaffPaymentGUI {
-    private int tripID, userID;
-    private String origin, destination, departDate, arrivalDate, plateNo;
-    private Set<String> seatIDs;
-    private double totalPrice;
+
     private JFrame frame;
-    private List<PassengerForm> passengerForms = new ArrayList<>();
-    private JComboBox<String> paymentMethodBox;
-    private JComboBox<String> genderBox;
-    private JTextField nameField, phoneField, icField, totalAmountField;
+    private JTextField nameField, phoneField, ageField, totalAmountField;
+    private JComboBox<String> genderBox, paymentMethodBox;
 
-    public StaffPaymentGUI(int userID, int tripID, Set<String> seatIDs, double totalPrice,
-                           String origin, String destination, String departDate, String arrivalDate, String plateNo) {
-        this.userID = userID;
-        this.tripID = tripID;
-        this.seatIDs = seatIDs;
-        this.totalPrice = totalPrice;
-        this.origin = origin;
-        this.destination = destination;
-        this.departDate = departDate;
-        this.arrivalDate = arrivalDate;
-        this.plateNo = plateNo;
-
+    public StaffPaymentGUI(int userID, int tripID, double totalPrice) {
         frame = new JFrame("Payment");
-        frame.setSize(500, 450);
+        frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel contentPane = new JPanel();
         contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        contentPane.setBackground(new Color(240, 248, 255)); // Light blue background
+        contentPane.setBackground(new Color(240, 248, 255));
         frame.setContentPane(contentPane);
 
         JLabel titleLabel = new JLabel("Customer Information and Payment");
@@ -53,8 +37,8 @@ public class StaffPaymentGUI {
         JLabel phoneLabel = new JLabel("Phone No:");
         phoneField = new JTextField(15);
 
-        JLabel icLabel = new JLabel("IC No:");
-        icField = new JTextField(15);
+        JLabel ageLabel = new JLabel("Age:");
+        ageField = new JTextField(5);
 
         JLabel totalLabel = new JLabel("Total Amount (RM):");
         totalAmountField = new JTextField(String.format("%.2f", totalPrice));
@@ -69,55 +53,121 @@ public class StaffPaymentGUI {
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
 
-        // Layout using GroupLayout
+        submitButton.addActionListener(e -> {
+            try {
+                String name = nameField.getText().trim();
+                String gender = (String) genderBox.getSelectedItem();
+                String phone = phoneField.getText().trim();
+                String ageStr = ageField.getText().trim();
+                String method = (String) paymentMethodBox.getSelectedItem();
+
+                if (name.isEmpty() || phone.isEmpty() || ageStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please fill in all fields.");
+                    return;
+                }
+
+                int age = Integer.parseInt(ageStr);
+
+                // Build JSON
+                JSONObject json = new JSONObject();
+                json.put("name", name);
+                json.put("gender", gender);
+                json.put("phone", phone);
+                json.put("age", age);
+                json.put("paymentMethod", method);
+                json.put("totalAmount", totalPrice);
+                json.put("tripID", tripID);
+                json.put("userID", userID);
+
+                // Send POST request
+                URL url = new URL("http://localhost/webServiceJSON/confirm_payment.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = json.toString().getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                StringBuilder response = new StringBuilder();
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                }
+
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                if (jsonResponse.getString("status").equals("success")) {
+                    String bookingID = jsonResponse.getString("bookingID");
+                    String passengerID = jsonResponse.getString("passengerID");
+                    String paymentID = jsonResponse.getString("paymentID");
+
+                    JOptionPane.showMessageDialog(frame,
+                            "Booking Confirmed!\nBooking ID: " + bookingID +
+                            "\nPassenger ID: " + passengerID +
+                            "\nPayment ID: " + paymentID);
+                    frame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Error: " + jsonResponse.getString("message"));
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Failed to confirm booking.");
+            }
+        });
+
+        // Layout with GroupLayout
         GroupLayout layout = new GroupLayout(contentPane);
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.CENTER)
-        		.addComponent(titleLabel)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(nameLabel)
-        				.addComponent(genderLabel)
-        				.addComponent(phoneLabel)
-        				.addComponent(icLabel)
-        				.addComponent(totalLabel)
-        				.addComponent(paymentLabel))
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(nameField, 331, 331, 331)
-        				.addComponent(genderBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(phoneField, 331, 331, 331)
-        				.addComponent(icField, 331, 331, 331)
-        				.addComponent(totalAmountField, 331, 331, 331)
-        				.addComponent(paymentMethodBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-        		.addComponent(submitButton, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(titleLabel)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(nameLabel)
+                                        .addComponent(genderLabel)
+                                        .addComponent(phoneLabel)
+                                        .addComponent(ageLabel)
+                                        .addComponent(totalLabel)
+                                        .addComponent(paymentLabel))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(submitButton)
+                                        .addComponent(nameField, 331, 331, 331)
+                                        .addComponent(genderBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(phoneField, 331, 331, 331)
+                                        .addComponent(ageField, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(totalAmountField, 331, 331, 331)
+                                        .addComponent(paymentMethodBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(titleLabel)
-        			.addGap(15)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(nameLabel)
-        				.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(genderLabel)
-        				.addComponent(genderBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(phoneLabel)
-        				.addComponent(phoneField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(icLabel)
-        				.addComponent(icField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(totalLabel)
-        				.addComponent(totalAmountField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(paymentLabel)
-        				.addComponent(paymentMethodBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(20)
-        			.addComponent(submitButton)
-        			.addGap(138))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(titleLabel)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(nameLabel)
+                                        .addComponent(nameField))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(genderLabel)
+                                        .addComponent(genderBox))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(phoneLabel)
+                                        .addComponent(phoneField))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(ageLabel)
+                                        .addComponent(ageField))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(totalLabel)
+                                        .addComponent(totalAmountField))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(paymentLabel)
+                                        .addComponent(paymentMethodBox))
+                                .addGap(30)
+                                .addComponent(submitButton))
         );
+
         contentPane.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
