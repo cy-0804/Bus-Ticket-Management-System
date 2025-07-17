@@ -3,9 +3,9 @@ package View;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel; // Import DefaultTableModel
-import javax.swing.event.ListSelectionEvent; // Import ListSelectionEvent
-import javax.swing.event.ListSelectionListener; // Import ListSelectionListener
+import javax.swing.table.DefaultTableModel; 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener; 
 import java.io.*;
 import java.net.*;
 import org.json.*;
