@@ -61,9 +61,9 @@ public class StaffDashboardGUI {
 		passengerCheckInBtn.setBounds(279, 191, 162, 39);
 		frame.getContentPane().add(passengerCheckInBtn);
 		
-		JButton busStatusUpdateBtn = new JButton("Bus Status Update");
-		busStatusUpdateBtn.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
-		busStatusUpdateBtn.setBounds(279, 264, 162, 39);
-		frame.getContentPane().add(busStatusUpdateBtn);
+		JButton viewBusSchduleBtn = new JButton("View Bus Schedule");
+		viewBusSchduleBtn.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
+		viewBusSchduleBtn.setBounds(279, 264, 162, 39);
+		frame.getContentPane().add(viewBusSchduleBtn);
 	}
 }
