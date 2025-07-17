@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpclient.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/apache-httpcomponents-httpcore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/yijin/Downloads/mysql-connector-java-5.1.22.jar"/>
+	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpclient.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Lim Zhi Ying/Downloads/apache-httpcomponents-httpcore.jar"/>

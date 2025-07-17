@@ -1,10 +1,11 @@
 package View;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class BusStatusUpdateGUI {
+public class CustomerBookingGUI {
 
 	private JFrame frame;
 
@@ -15,7 +16,7 @@ public class BusStatusUpdateGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BusStatusUpdateGUI window = new BusStatusUpdateGUI();
+					CustomerBookingGUI window = new CustomerBookingGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -23,11 +24,11 @@ public class BusStatusUpdateGUI {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
-	public BusStatusUpdateGUI() {
+	public CustomerBookingGUI() {
 		initialize();
 	}
 
@@ -36,8 +37,9 @@ public class BusStatusUpdateGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.getContentPane().setBackground(new Color(130, 182, 234));
+		frame.setBounds(100, 100, 700, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 	}
-
 }
