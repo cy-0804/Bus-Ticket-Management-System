@@ -2,6 +2,9 @@ package View;
 
 import java.awt.EventQueue;
 import javax.swing.*;
+
+import org.json.JSONException;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -18,6 +21,9 @@ public class CustomerSearchBusGUI {
 	private JComboBox<String> destinationBox;
 	private JTextField departDateField; 
 	private JButton searchButton;
+
+	private JPanel tripsPanel;
+
 	private JButton btnBack;
 
 	/**
@@ -47,9 +53,9 @@ public class CustomerSearchBusGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Search Bus");
 		frame.getContentPane().setBackground(new Color(130, 182, 234));
-		frame.setBounds(100, 100, 650, 450);
+		frame.setBounds(100, 100, 650, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -95,6 +101,12 @@ public class CustomerSearchBusGUI {
 		searchButton.setBounds(400, 270, 100, 30);
 		frame.getContentPane().add(searchButton);
 		
+		tripsPanel = new JPanel();
+		tripsPanel.setLayout(new BoxLayout(tripsPanel, BoxLayout.Y_AXIS));
+		JScrollPane scrollPane = new JScrollPane(tripsPanel);
+		scrollPane.setBounds(70, 320, 500, 150);
+		frame.getContentPane().add(scrollPane);
+
 		btnBack = new JButton("Back");
 		btnBack.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
 		btnBack.setBounds(510, 270, 94, 30);
@@ -166,11 +178,87 @@ public class CustomerSearchBusGUI {
 						}
 					}
 
-					if (result.length() == 0) {
-						JOptionPane.showMessageDialog(null, "No trips found for selected route.");
-					} else {
-						JOptionPane.showMessageDialog(null, result.toString());
+					tripsPanel.removeAll();
+
+					boolean found = false;
+					for (int i = 0; i < trips.length(); i++) {
+						org.json.JSONObject trip = trips.getJSONObject(i);
+
+						if (trip.getString("fromStation").equals(origin) &&
+							trip.getString("toStation").equals(destination) &&
+							trip.getString("departureTime").split(" ")[0].equals(departDate)) {
+
+							found = true;
+
+							JPanel tripPanel = new JPanel();
+							tripPanel.setLayout(new GridLayout(0, 1));
+							tripPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+							tripPanel.setBackground(new Color(230, 240, 255));
+
+							String tripInfo = "<html>Trip ID: " + trip.getInt("tripID") +
+									"<br>Bus: " + trip.getString("plateNo") +
+									"<br>Departure: " + trip.getString("departureTime") +
+									"<br>Arrival: " + trip.getString("arrivalTime") +
+									"<br>Price: RM" + trip.getDouble("price") + "</html>";
+
+							JLabel tripLabel = new JLabel(tripInfo);
+							JButton bookBtn = new JButton("Book");
+							bookBtn.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 20));
+
+							bookBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									int tripID = 0;
+									try {
+										tripID = trip.getInt("tripID");
+									} catch (JSONException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									String plateNo = null;
+									try {
+										plateNo = trip.getString("plateNo");
+									} catch (JSONException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									String departure = null;
+									try {
+										departure = trip.getString("departureTime");
+									} catch (JSONException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									String arrival = null;
+									try {
+										arrival = trip.getString("arrivalTime");
+									} catch (JSONException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									double price = 0;
+									try {
+										price = trip.getDouble("price");
+									} catch (JSONException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+
+									new CustomerBookingGUI(tripID, origin, destination, departDate, plateNo, departure, arrival, price);
+								}
+							});
+
+							tripPanel.add(tripLabel);
+							tripPanel.add(bookBtn);
+
+							tripsPanel.add(tripPanel);
+						}
 					}
+
+					if (!found) {
+						JOptionPane.showMessageDialog(null, "No trips found for selected route and date.");
+					}
+					tripsPanel.revalidate();
+					tripsPanel.repaint();
 
 				} catch (Exception ex) {
 					ex.printStackTrace();
