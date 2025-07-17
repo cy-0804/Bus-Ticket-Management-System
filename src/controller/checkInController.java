@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class checkInController {
 
+	//depends
     private static final String CHECKIN_INFO_URL = "http://localhost/webServiceJSON/get_booking_info.php";
     private static final String UPDATE_STATUS_URL = "http://localhost/webServiceJSON/checkin(1).php";
 

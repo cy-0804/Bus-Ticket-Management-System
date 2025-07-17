@@ -149,6 +149,7 @@ public class Staff_CheckInGUI {
 			}
 		});
 
+		//to update if check in
 		btnCheckin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String bookingId = txtBookingId.getText().trim();
