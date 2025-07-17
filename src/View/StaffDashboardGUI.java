@@ -57,7 +57,6 @@ public class StaffDashboardGUI {
 			EventQueue.invokeLater(() -> {
 				try {
 					ViewBusGUI viewBus = new ViewBusGUI();
-					// if you want to close dashboard after opening
 					frame.dispose(); 
 				} catch (Exception ex) {
 					ex.printStackTrace();
