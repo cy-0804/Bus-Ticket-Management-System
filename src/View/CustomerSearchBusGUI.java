@@ -14,7 +14,8 @@ import java.net.URL;
 import java.time.LocalDate;
 
 public class CustomerSearchBusGUI {
-
+	private int userID;
+	
 	private JFrame frame;
 
 	private JComboBox<String> originBox;
@@ -27,26 +28,12 @@ public class CustomerSearchBusGUI {
 	private JButton btnBack;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CustomerSearchBusGUI window = new CustomerSearchBusGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public CustomerSearchBusGUI() {
+	public CustomerSearchBusGUI(int userID) {
+		this.userID = userID;
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -115,7 +102,7 @@ public class CustomerSearchBusGUI {
 		btnBack.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            frame.dispose(); 
-	            new CustomerDashboardGUI(); 
+	            new CustomerDashboardGUI(userID); 
 	        }
 	    });
 
@@ -196,7 +183,7 @@ public class CustomerSearchBusGUI {
 							tripPanel.setBackground(new Color(230, 240, 255));
 
 							String tripInfo = "<html>Trip ID: " + trip.getInt("tripID") +
-									"<br>Bus: " + trip.getString("plateNo") +
+									"<br>Bus: " + trip.getString("busNum") +
 									"<br>Departure: " + trip.getString("departureTime") +
 									"<br>Arrival: " + trip.getString("arrivalTime") +
 									"<br>Price: RM" + trip.getDouble("price") + "</html>";
@@ -243,7 +230,7 @@ public class CustomerSearchBusGUI {
 										e1.printStackTrace();
 									}
 
-									new CustomerBookingGUI(tripID, origin, destination, departDate, plateNo, departure, arrival, price);
+									new CustomerBookingGUI(userID, tripID, origin, destination, plateNo, departure, arrival, price);
 								}
 							});
 

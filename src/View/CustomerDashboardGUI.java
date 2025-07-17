@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,29 +13,16 @@ import java.awt.Color;
 import javax.swing.JButton;
 
 public class CustomerDashboardGUI {
+	
+	private int userID;
 
 	private JFrame frame;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CustomerDashboardGUI window = new CustomerDashboardGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public CustomerDashboardGUI() {
+	public CustomerDashboardGUI(int userID) {
+		this.userID = userID;
 		initialize();
 		frame.setVisible(true);
 	}
@@ -75,6 +64,14 @@ public class CustomerDashboardGUI {
 	            new LoginGUI(); 
 	        }
 	    });
+		
+		btnNewButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        frame.dispose();
+		        new CustomerSearchBusGUI(userID); 
+		    }
+		});
+
 	}
 
 }
