@@ -172,7 +172,6 @@ public class Staff_CheckInGUI {
 				}
 			}
 		});
-<<<<<<< HEAD
 
 
 	    // Print Boarding Pass
@@ -312,12 +311,6 @@ public class Staff_CheckInGUI {
 
 
 
-=======
->>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
 	}
-<<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> branch 'master' of https://github.com/cy-0804/Bus-Ticket-Management-System.git
