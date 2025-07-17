@@ -1,6 +1,5 @@
 package model;
 
-//station model
 public class Station {
 	private int stationID;
 	public String stationName;

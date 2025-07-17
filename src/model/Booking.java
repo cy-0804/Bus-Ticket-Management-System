@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDateTime;
 
-//booking model
 public class Booking {
 	private String bookingID;
     private int tripID;
