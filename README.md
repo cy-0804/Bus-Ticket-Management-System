@@ -3,22 +3,26 @@
 ## **Project Member**
 
 1. ANG CHA YAN (B032310478 S1G1)
-@GITHUB LINK
-2. NATALIE TAN WEI MEI (B032310844 S1G1) @GIT HUB LINK
+https://github.com/cy-0804
+2. NATALIE TAN WEI MEI (B032310844 S1G1)
+https://github.com/nataalietan
 3. HO XIN YONG (B032310518 S1G1)
-@GITHUB LINK
+https://github.com/xinyong03
 4. CHAI YI JING (B032310827 S1G1)
-@GITHUB LINK
+https://github.com/Jinggggg030
 5. LOH JIA YING (B032310401 S1G2)
-@ GIT HUB LINK
+https://github.com/EmylShamo
 6. LIM ZHI YING (B032310439 S1G2)
-@ GIT HUB LINK
+https://github.com/ZYLIM03
 
 Lecturer :Dr Mohd Hariz Bin Naim @ Mohayat
 
 ## **Project Overview**
 
 ## Introduction
+
+The Bus Ticketing System is a distributed application which designed to manage the booking process of bus tickets for both passengers and staff. The system consists of two main applications that separated by roles which are Customer Application and Staff Application. Both applications are communicate through the backend application which developed in PHP that can interact with databases. Besides, the system also use DocSpring API to generate boarding passes for the passengers.
+
 
 ## Technologies Used
 
@@ -35,7 +39,6 @@ Lecturer :Dr Mohd Hariz Bin Naim @ Mohayat
    -   External Integration: Docspring API for boarding pass pdf generation,
 
     
-
 ## Features
 
 Two front-end apps, which are separated by role, which is the staff app and the customer app.
@@ -93,6 +96,7 @@ The staff can view all scheduled trips for a given bus and date. The system will
 
 ## **System Architecture**
 **High Level Diagram**
+<img width="974" height="588" alt="image" src="https://github.com/user-attachments/assets/94bf7e72-4172-4e80-a0a1-f429a996493f" />
 
 
 ## **Backend Application**
@@ -179,11 +183,63 @@ Several technologies are applied to the application development:
 
 ## **Interface Design**
 
-//wait convert image first
+Login Page
+
+<img width="825" height="566" alt="image" src="https://github.com/user-attachments/assets/82712482-6bf4-464a-b1c8-0cfb7dea8cbf" />
+
+
+Customer Dashboard
+
+ <img width="848" height="567" alt="image" src="https://github.com/user-attachments/assets/2b1e4344-0582-48bf-a8a8-87c70b4f599d" />
+
+
+Customer Booking Page
+
+ <img width="940" height="877" alt="image" src="https://github.com/user-attachments/assets/c47601b4-0472-44b9-8a20-2357445b4537" />
+
+ <img width="940" height="679" alt="image" src="https://github.com/user-attachments/assets/f800937f-19cb-47c4-bc98-3b768f61d315" />
+
+<img width="940" height="675" alt="image" src="https://github.com/user-attachments/assets/91a1a99b-bb82-4237-bb0e-0464b85dabd8" />
+
+
+Customer View Ticket Page
+ 
+<img width="940" height="429" alt="image" src="https://github.com/user-attachments/assets/93855627-29b0-48ca-a96d-dc4dcff64c7f" />
+
+
+Customer Payment Page
+ 
+<img width="640" height="756" alt="image" src="https://github.com/user-attachments/assets/33099d5f-4661-4337-96f9-07798c4f8380" />
+
+
+ 
+Staff Dashboard
+
+ <img width="940" height="492" alt="image" src="https://github.com/user-attachments/assets/cf0e222b-d70d-4332-84c8-ae4c3ca1851f" />
+
+
+Staff Manual Booking Page
+
+ <img width="798" height="651" alt="image" src="https://github.com/user-attachments/assets/b0ac3d06-6e5a-4821-9116-87086e38c048" />
+
+
+Staff Passenger Check-in Page
+ 
+<img width="860" height="444" alt="image" src="https://github.com/user-attachments/assets/93e93b34-f4d3-4fd3-9c8d-8a992eb0737e" />
+
+Boarding Pass Template:
+ 
+<img width="913" height="293" alt="image" src="https://github.com/user-attachments/assets/f8bf64b1-f124-4285-885a-2008f38660cc" />
+
+Staff View Bus Schedule
+ 
+<img width="854" height="472" alt="image" src="https://github.com/user-attachments/assets/23c682b9-0677-470e-9a79-ae11f465c22e" />
+
 
 ## **Database Design**
 
 **Entity-Relationship Diagram (ERD)**
+<img width="940" height="1185" alt="image" src="https://github.com/user-attachments/assets/50762485-a402-4483-afa5-10258245861f" />
 
 
 **Data Validation:**
@@ -218,6 +274,10 @@ Several technologies are applied to the application development:
   
 **Use Case Diagram**
 
+The system supports two types of users: Customer and Staff. Customers can search for buses, make bookings, pay, and view tickets. Staff can assist walk-in customers by making bookings for them, check in passengers, generate boarding passes, and update trip statuses.
+Below is the system’s use case diagram.
+
+<img width="749" height="606" alt="image" src="https://github.com/user-attachments/assets/145fbeda-04f7-4470-bbf1-54d391b823cb" />
 
 
 ## User Manual
