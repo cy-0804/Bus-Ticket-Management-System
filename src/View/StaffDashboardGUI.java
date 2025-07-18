@@ -59,7 +59,7 @@ public class StaffDashboardGUI {
 		passengerCheckInBtn.addActionListener(e -> {
 			EventQueue.invokeLater(() -> {
 				try {
-					Staff_CheckInGUI checkin = new Staff_CheckInGUI();
+					Staff_CheckInGUI checkin = new Staff_CheckInGUI(userID);
 					frame.dispose(); 
 				} catch (Exception ex) {
 					ex.printStackTrace();

@@ -57,7 +57,7 @@ public class StaffPaymentGUI {
 
         JPanel contentPane = new JPanel();
         contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        contentPane.setBackground(new Color(240, 248, 255));
+        contentPane.setBackground(new Color(130, 182, 234));
         frame.setContentPane(contentPane);
 
         JLabel titleLabel = new JLabel("Customer Information and Payment");
@@ -172,6 +172,8 @@ public class StaffPaymentGUI {
                             "\nPayment ID: " + paymentID +
                             "\nSeats Booked: " + getSelectedSeatNumbers(selectedSeats)); 
                     frame.dispose(); 
+                    new StaffDashboardGUI(userID);
+                    
                 } else {
                     JOptionPane.showMessageDialog(frame, "Error: " + jsonResponse.getString("message"));
                 }
@@ -233,7 +235,7 @@ public class StaffPaymentGUI {
                                 .addComponent(ageField))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(seatsLabel)
-                                .addComponent(seatScrollPane, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)) // Fixed height for scroll pane
+                                .addComponent(seatScrollPane, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)) 
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(totalLabel)
                                 .addComponent(totalAmountField))

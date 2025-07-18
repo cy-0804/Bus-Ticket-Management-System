@@ -32,22 +32,12 @@ public class Staff_CheckInGUI {
 	private JSONObject checkInData = null;
 	private int userID;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Staff_CheckInGUI window = new Staff_CheckInGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public Staff_CheckInGUI(int userID) {
+		this.userID = userID;
+		initialize();
+		frame.setVisible(true); 
 	}
 
-	public Staff_CheckInGUI() {
-		initialize();
-	}
 
 	private void initialize() {
 		frame = new JFrame("Check-In Customer");
@@ -173,7 +163,6 @@ public class Staff_CheckInGUI {
 				}
 			}
 		});
-
 
 	    // Print Boarding Pass
 	    btnPrint.addActionListener(new ActionListener() {
