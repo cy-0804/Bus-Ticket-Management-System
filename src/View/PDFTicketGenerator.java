@@ -77,7 +77,7 @@ public class PDFTicketGenerator {
                 Passenger p = bs.getPassenger();
                 Seat seat = bs.getSeat();
 
-                passengerTable.addCell(makeValueCell(seat.getSeatNumber())); // assuming you have getSeatNumber()
+                passengerTable.addCell(makeValueCell(seat.getSeatNumber())); 
                 passengerTable.addCell(makeValueCell(p.getName()));
                 passengerTable.addCell(makeValueCell(p.getGender()));
                 passengerTable.addCell(makeValueCell(p.getTelNo()));

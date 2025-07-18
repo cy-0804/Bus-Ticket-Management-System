@@ -130,7 +130,7 @@ public class CustomerViewTicketGUI {
                 ticketMap.clear();
                 
                 ticketDropdown.removeAllItems(); 
-                ticketDropdown.addItem("Select your ticket..."); // optional placeholder
+                ticketDropdown.addItem("Select your ticket..."); 
 
                 Set<String> uniqueBookingIDs = new HashSet<>();
                 for (int i = 0; i < dataArray.length(); i++) {
