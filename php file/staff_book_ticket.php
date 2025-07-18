@@ -1,8 +1,7 @@
 <?php
 header("Content-Type: application/json");
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Throw exceptions on errors
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); 
 
-// Database connection info - change as needed
 $host = "localhost";
 $dbname = "bus_ticket_management_system";
 $user = "root";
@@ -19,12 +18,10 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Get and sanitize GET parameters
 $origin = isset($_GET['origin']) ? trim($_GET['origin']) : '';
 $destination = isset($_GET['destination']) ? trim($_GET['destination']) : '';
 $date = isset($_GET['date']) ? trim($_GET['date']) : '';
 
-// Basic validation
 if (empty($origin) || empty($destination) || empty($date)) {
     echo json_encode([
         "status" => "error",
@@ -33,10 +30,6 @@ if (empty($origin) || empty($destination) || empty($date)) {
     $conn->close();
     exit;
 }
-
-// Prepare and execute SQL query
-// Assuming your trips table is named `trip` and columns correspond to your data
-// Adjust column/table names to your actual schema!
 
 $sql = "SELECT 
     t.tripID,
@@ -56,8 +49,6 @@ WHERE s1.stationName = ?
   AND s2.stationName = ?
   AND DATE(t.departureTime) = ?
 GROUP BY t.tripID";
-
-
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {

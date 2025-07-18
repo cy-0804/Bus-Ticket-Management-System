@@ -21,7 +21,6 @@ if (empty($booking_id)) {
     exit;
 }
 
-// Prepare SQL
 $query = "
 SELECT 
     t.tripID,

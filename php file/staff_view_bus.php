@@ -16,7 +16,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Sanitize input
 $busID = isset($_GET['busID']) ? $conn->real_escape_string($_GET['busID']) : '';
 $date = isset($_GET['date']) ? $conn->real_escape_string($_GET['date']) : '';
 
@@ -25,7 +24,6 @@ if (empty($busID) || empty($date)) {
     exit;
 }
 
-// SQL query to get trips with station names
 $sql = "
     SELECT 
         trip.tripID, 
@@ -52,7 +50,6 @@ while ($row = $result->fetch_assoc()) {
     $trips[] = $row;
 }
 
-// Return trips as JSON array (not wrapped)
 echo json_encode($trips);
 
 $conn->close();

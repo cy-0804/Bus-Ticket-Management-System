@@ -46,14 +46,13 @@ $paymentMethod = $conn->real_escape_string($data["paymentMethod"]);
 $totalAmount = floatval($data["totalAmount"]);
 $tripID = intval($data["tripID"]);
 $managedBy = intval($data["userID"]);
-$selectedSeats = $data["selectedSeats"]; // This will be an array of seat objects {seatID, seatNumber}
+$selectedSeats = $data["selectedSeats"]; 
 
 error_log("PHP Input - Name: $name, Gender: $gender, Phone: $phone, Age: $age, PaymentMethod: $paymentMethod, TotalAmount: $totalAmount, TripID: $tripID, ManagedBy (UserID): $managedBy, Selected Seats: " . json_encode($selectedSeats));
 
 try {
     $conn->begin_transaction();
 
-    // 1. Insert into passenger table
     $stmtPassenger = $conn->prepare("INSERT INTO passenger (name, gender, telNo, age) VALUES (?, ?, ?, ?)");
     $stmtPassenger->bind_param("sssi", $name, $gender, $phone, $age);
     $stmtPassenger->execute();
@@ -61,7 +60,6 @@ try {
     $stmtPassenger->close();
     error_log("Generated passengerID: " . $passengerID);
 
-    // 2. Insert into payment table
     $stmtPayment = $conn->prepare("INSERT INTO payment (paymentDate, amount, paymentMethod) VALUES (NOW(), ?, ?)");
     $stmtPayment->bind_param("ds", $totalAmount, $paymentMethod);
     $stmtPayment->execute();
@@ -69,7 +67,6 @@ try {
     $stmtPayment->close();
     error_log("Generated paymentID: " . $paymentID);
 
-    // 3. Generate bookingID
     $resBooking = $conn->query("SELECT bookingID FROM booking ORDER BY bookingID DESC LIMIT 1");
     if ($resBooking->num_rows > 0) {
         $lastBookingID = $resBooking->fetch_assoc()["bookingID"];
@@ -80,7 +77,6 @@ try {
     }
     error_log("Generated bookingID: " . $bookingID);
 
-    // 4. Insert into booking table
     error_log("Booking Values before INSERT: bookingID=$bookingID, tripID=$tripID, bookedBy (passengerID)=$passengerID, managedBy (userID)=$managedBy, paymentID=$paymentID, totalAmount=$totalAmount");
 
     $stmtBooking = $conn->prepare("INSERT INTO booking (bookingID, tripID, bookedBy, managedBy, paymentID, bookingDate, totalPrice)
@@ -89,7 +85,6 @@ try {
     $stmtBooking->execute();
     $stmtBooking->close();
 
-    // 5. Update seat status and insert into booking_seats for each selected seat
     $stmtUpdateSeat = $conn->prepare("UPDATE seat SET status = 'booked' WHERE seatID = ?");
     $stmtBookingSeats = $conn->prepare("INSERT INTO booking_seats (bookingID, seatID, passengerID, checkin_status) VALUES (?, ?, ?, 'pending')");
 
@@ -104,7 +99,6 @@ try {
         }
         error_log("Updated seat status for seatID: " . $seatID);
 
-        // Insert into booking_seats
         $stmtBookingSeats->bind_param("sii", $bookingID, $seatID, $passengerID);
         $stmtBookingSeats->execute();
         error_log("Inserted into booking_seats for bookingID: $bookingID, seatID: $seatID, passengerID: $passengerID");
@@ -125,7 +119,7 @@ try {
     ]);
 
 } catch (Exception $e) {
-    $conn->rollback(); // Rollback transaction on error
+    $conn->rollback(); 
     error_log("Booking Failed (Exception caught): " . $e->getMessage() . " on line " . $e->getLine() . " in " . $e->getFile());
     if ($conn->errno) {
         error_log("MySQL Error No: " . $conn->errno . ", MySQL Error: " . $conn->error);
