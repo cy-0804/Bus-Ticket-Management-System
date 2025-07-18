@@ -4,31 +4,8 @@ public class BookingSeats {
 	private Booking booking;
 	private Seat seat;
 	private Passenger passenger;
-	//private String bookingID;
-    //private int seatID; 
-    //private int passengerID;
     private String checkin_status;
     
-    /*
-	public String getBookingID() {
-		return bookingID;
-	}
-	public void setBookingID(String bookingID) {
-		this.bookingID = bookingID;
-	}
-	public int getSeatID() {
-		return seatID;
-	}
-	public void setSeatID(int seatID) {
-		this.seatID = seatID;
-	}
-	public int getPassengerID() {
-		return passengerID;
-	}
-	public void setPassengerID(int passengerID) {
-		this.passengerID = passengerID;
-	}
-	*/
     public BookingSeats() {}
     public BookingSeats(Booking booking, Seat seat, Passenger passenger, String checkin_status) {
     	this.booking = booking;

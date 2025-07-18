@@ -237,7 +237,6 @@ public class Staff_CheckInGUI {
 	                    String state = "";
 	                    String pdfUrl = null;
 
-	                    // Polling loop
 	                    for (int i = 0; i < 10; i++) {
 	                        Request pollRequest = new Request.Builder()
 	                                .url("https://api.docspring.com/api/v1/submissions/" + submissionId)

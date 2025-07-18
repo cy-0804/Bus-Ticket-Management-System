@@ -2,18 +2,9 @@ package model;
 
 public class Customer {
 	private User user;
-	//private int userID;
     private String memberStatus;
     private String memberNo;
-    
-	/*
-	public int getUserID() {
-		return userID;
-	}
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-	*/
+   
     public Customer() {}
     public Customer(User user, String memberStatus, String memberNo) {
     	this.user = user;

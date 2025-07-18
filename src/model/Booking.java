@@ -8,9 +8,6 @@ public class Booking {
     private User customer;
     private User staff;
     private Payment payment;
-    //private int bookedBy;
-    //private int managedBy;
-    //private int paymentID; 
     private LocalDateTime bookingDate;
     private double totalPrice;
     public Booking() {
@@ -55,26 +52,6 @@ public class Booking {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
-	/*
-	public int getBookedBy() {
-		return bookedBy;
-	}
-	public void setBookedBy(int bookedBy) {
-		this.bookedBy = bookedBy;
-	}
-	public int getManagedBy() {
-		return managedBy;
-	}
-	public void setManagedBy(int managedBy) {
-		this.managedBy = managedBy;
-	}
-	public int getPaymentID() {
-		return paymentID;
-	}
-	public void setPaymentID(int paymentID) {
-		this.paymentID = paymentID;
-	}
-	*/
 	public LocalDateTime getBookingDate() {
 		return bookingDate;
 	}

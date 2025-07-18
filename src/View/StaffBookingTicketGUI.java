@@ -18,11 +18,11 @@ public class StaffBookingTicketGUI {
 	private JComboBox<String> destinationBox;
 	private JTextField departDateField;
 	private JTextField originField;
-	private JTable tripsTable; // Replaced JTextArea
-	private DefaultTableModel tableModel; // Model for the JTable
-	private JButton confirmButton; // Made accessible to enable/disable
+	private JTable tripsTable;
+	private DefaultTableModel tableModel; 
+	private JButton confirmButton; 
 	private int userID;
-	private int selectedTripID = -1; // Initialize with an invalid ID
+	private int selectedTripID = -1; 
 	private double selectedPrice = 0.0;
 
 	public StaffBookingTicketGUI(int userID) {
@@ -34,7 +34,7 @@ public class StaffBookingTicketGUI {
 	private void initialize() {
 		frame = new JFrame("Search Bus");
 		frame.getContentPane().setBackground(new Color(130, 182, 234));
-		frame.setBounds(100, 100, 800, 650); // Increased frame size for table
+		frame.setBounds(100, 100, 800, 650); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -50,7 +50,7 @@ public class StaffBookingTicketGUI {
 		frame.getContentPane().add(originLabel);
 
 		originField = new JTextField();
-		originField.setBounds(300, 100, 250, 25); // Adjusted width
+		originField.setBounds(300, 100, 250, 25); 
 		frame.getContentPane().add(originField);
 
 		JLabel destinationLabel = new JLabel("Destination:");
@@ -61,7 +61,7 @@ public class StaffBookingTicketGUI {
 		destinationBox = new JComboBox<>(new String[]{
 			"-- Select Location --", "Terminal Bersepadu Selatan", "Melaka Sentral", "Larkin Sentral", "Penang Sentral", "Ipoh Amanjaya"
 		});
-		destinationBox.setBounds(300, 150, 250, 25); // Adjusted width
+		destinationBox.setBounds(300, 150, 250, 25); 
 		frame.getContentPane().add(destinationBox);
 
 		JLabel departDateLabel = new JLabel("Depart Date (YYYY-MM-DD):");
@@ -70,7 +70,7 @@ public class StaffBookingTicketGUI {
 		frame.getContentPane().add(departDateLabel);
 
 		departDateField = new JTextField();
-		departDateField.setBounds(300, 200, 250, 25); // Adjusted width
+		departDateField.setBounds(300, 200, 250, 25); 
 		frame.getContentPane().add(departDateField);
 
 		JButton searchButton = new JButton("Search");
@@ -82,37 +82,37 @@ public class StaffBookingTicketGUI {
 		btnBack.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
 		btnBack.setBounds(560, 270, 94, 30);
 		frame.getContentPane().add(btnBack);
-
-		// --- JTable setup ---
+		
+		// Table 
 		String[] columnNames = {"Trip ID", "From", "To", "Departure Time", "Arrival Time", "Plate No", "Price (RM)", "Seats"};
 		tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make all cells non-editable
+                return false; 
             }
         };
 		tripsTable = new JTable(tableModel);
 		tripsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Allow only single row selection
 		JScrollPane scrollPane = new JScrollPane(tripsTable);
-		scrollPane.setBounds(50, 320, 700, 200); // Adjusted bounds for table
+		scrollPane.setBounds(50, 320, 700, 200); 
 		frame.getContentPane().add(scrollPane);
 
-		// Add a listener to the table for row selection
+		// Row selection
 		tripsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) { // Ensure event fires only once
+                if (!e.getValueIsAdjusting()) { 
                     int selectedRow = tripsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        // A row is selected, extract tripID and price
-                        selectedTripID = (int) tripsTable.getValueAt(selectedRow, 0); // Trip ID is in column 0
-                        selectedPrice = (double) tripsTable.getValueAt(selectedRow, 6); // Price is in column 6
-                        confirmButton.setEnabled(true); // Enable confirm button
+                        // Extract tripID and price
+                        selectedTripID = (int) tripsTable.getValueAt(selectedRow, 0); 
+                        selectedPrice = (double) tripsTable.getValueAt(selectedRow, 6); 
+                        confirmButton.setEnabled(true); 
                     } else {
-                        // No row is selected
+                        // No row selected
                         selectedTripID = -1;
                         selectedPrice = 0.0;
-                        confirmButton.setEnabled(false); // Disable confirm button
+                        confirmButton.setEnabled(false); 
                     }
                 }
             }
@@ -121,16 +121,15 @@ public class StaffBookingTicketGUI {
 
 		confirmButton = new JButton("Confirm");
 		confirmButton.setFont(new Font("Tw Cen MT Condensed", Font.BOLD, 16));
-		confirmButton.setBounds(350, 540, 100, 30); // Adjusted bounds
-		confirmButton.setEnabled(false); // Initially disabled until a trip is selected
+		confirmButton.setBounds(350, 540, 100, 30); 
+		confirmButton.setEnabled(false); 
 		frame.getContentPane().add(confirmButton);
 
 		btnBack.addActionListener(e -> {
 			frame.dispose();
-			new StaffDashboardGUI(userID); // Assuming StaffDashboardGUI exists and takes userID
+			new StaffDashboardGUI(userID); 
 		});
 
-		// Set a default origin for convenience in testing, can be removed later
 		originField.setText("Terminal Bersepadu Selatan");
 
 		searchButton.addActionListener(e -> {
@@ -173,9 +172,7 @@ public class StaffBookingTicketGUI {
 
 		confirmButton.addActionListener(e -> {
 			if (selectedTripID != -1) {
-				// Proceed to StaffPaymentGUI with the selected trip details
 				frame.dispose();
-				// Ensure StaffPaymentGUI constructor matches these parameters
 				new StaffPaymentGUI(userID, selectedTripID, selectedPrice);
 			} else {
 				JOptionPane.showMessageDialog(frame, "No trip selected. Please select a trip from the table.", "Selection Error", JOptionPane.WARNING_MESSAGE);
@@ -185,9 +182,9 @@ public class StaffBookingTicketGUI {
 
 	private void fetchTripData(String origin, String destination, String date) throws Exception {
 		// Clear previous search results and disable confirm button
-		tableModel.setRowCount(0); // Clear all rows from the table
+		tableModel.setRowCount(0); 
 		confirmButton.setEnabled(false);
-		selectedTripID = -1; // Reset selection
+		selectedTripID = -1; 
 
 		String apiUrl = "http://localhost/webServiceJSON/staff_book_ticket.php?origin="
 				+ URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination, "UTF-8")
@@ -216,7 +213,7 @@ public class StaffBookingTicketGUI {
 
 		if (!jsonResponse.getString("status").equals("success")) {
 			JOptionPane.showMessageDialog(frame, "No trips found: " + jsonResponse.getString("message"), "No Results", JOptionPane.INFORMATION_MESSAGE);
-			return; // No trips found, exit method
+			return; 
 		}
 
 		JSONArray trips = jsonResponse.getJSONArray("trips");
@@ -238,7 +235,7 @@ public class StaffBookingTicketGUI {
 				trip.getDouble("price"),
 				trip.getInt("availableSeats")
 			};
-			tableModel.addRow(rowData); // Add row to the table model
+			tableModel.addRow(rowData); 
 		}
 	}
 }

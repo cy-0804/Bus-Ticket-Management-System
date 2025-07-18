@@ -10,17 +10,6 @@ public class StaffDashboardGUI {
 	private JFrame frame;
 	private int userID;
 
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(() -> {
-//			try {
-//				StaffDashboardGUI window = new StaffDashboardGUI();
-//				window.frame.setVisible(true);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		});
-//	}
-
 	public StaffDashboardGUI(int userID) {
 		this.userID=userID;
 		initialize();
@@ -78,7 +67,6 @@ public class StaffDashboardGUI {
 			});
 		});
 
-		// ActionListener for View Bus Schedule
 		viewBusScheduleBtn.addActionListener(e -> {
 			EventQueue.invokeLater(() -> {
 				try {
@@ -90,12 +78,11 @@ public class StaffDashboardGUI {
 			});
 		});
 		
-		//action listener for manual booking
 		ticketBookingBtn.addActionListener(e -> {
 			EventQueue.invokeLater(() -> {
 				try {
-					new StaffBookingTicketGUI(userID); // ✅ Correct instantiation
-					frame.dispose(); // Optional: close current window
+					new StaffBookingTicketGUI(userID); 
+					frame.dispose(); 
 				} catch(Exception exp) {
 					exp.printStackTrace();
 				}

@@ -6,8 +6,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 public class CheckInRepository {
-
-    //Insert a check-in record 
+ 
     public void checkInPassenger(String bookingId) throws SQLException {
         String sql = """
             INSERT INTO checkin (booking_id, checkin_time, status)
@@ -24,7 +23,6 @@ public class CheckInRepository {
         }
     }
 
-    // ✅ Check if a passenger is already checked in
     public boolean isPassengerCheckedIn(String bookingId) throws SQLException {
         String sql = """
             SELECT COUNT(*) AS count
@@ -47,7 +45,6 @@ public class CheckInRepository {
         return false;
     }
 
-    // ✅ Optional: Cancel or reverse check-in (e.g., for last-minute cancellation)
     public void cancelCheckIn(String bookingId) throws SQLException {
         String sql = """
             UPDATE checkin

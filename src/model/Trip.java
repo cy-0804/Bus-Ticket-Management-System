@@ -26,7 +26,6 @@ public class Trip {
         this.price = price;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

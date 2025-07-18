@@ -52,7 +52,7 @@ public class PDFTicketGenerator {
 
             document.add(tripTable);
 
-            // Passenger Section Title
+            // Passenger Details Title
             Paragraph passTitle = new Paragraph("Passenger Details")
                     .setBold()
                     .setFontSize(16)
@@ -60,13 +60,12 @@ public class PDFTicketGenerator {
                     .setMarginBottom(10);
             document.add(passTitle);
 
-            // Passenger Info Table (One big table for all passengers)
+            // Passenger Info Table
             Table passengerTable = new Table(UnitValue.createPercentArray(new float[]{1, 2, 2, 2, 1}))
                     .useAllAvailableWidth()
                     .setBorder(new SolidBorder(1))
                     .setMarginBottom(20);
 
-            // Header Row
             passengerTable.addHeaderCell(makeHeaderCell("Seat No"));
             passengerTable.addHeaderCell(makeHeaderCell("Name"));
             passengerTable.addHeaderCell(makeHeaderCell("Gender"));

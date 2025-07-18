@@ -100,7 +100,6 @@ public class CustomerPaymentGUI {
         container.add(Box.createVerticalStrut(10));
         container.add(payButton);
 
-        // Scroll pane for form container
         JScrollPane scrollPane = new JScrollPane(container);
         scrollPane.setBorder(null);
         scrollPane.getViewport().setBackground(new Color(130, 182, 234));
@@ -116,7 +115,6 @@ public class CustomerPaymentGUI {
                 return;
             }
 
-            //JSONArray seatArray = new JSONArray();
             JSONArray passengerArray = new JSONArray();
 
             for (int i = 0; i < passengerForms.size(); i++) {
@@ -132,7 +130,6 @@ public class CustomerPaymentGUI {
                 p.put("telNo", pf.telField.getText());
                 p.put("age", Integer.parseInt(pf.ageField.getText()));
 
-                // each passenger gets their seatID in an array
                 JSONArray seatArray = new JSONArray();
                 seatArray.put(Integer.parseInt(pf.seatID));
                 p.put("seatIDs", seatArray);
