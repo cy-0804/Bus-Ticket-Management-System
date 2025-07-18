@@ -71,6 +71,13 @@ public class CustomerDashboardGUI {
 		        new CustomerSearchBusGUI(userID); 
 		    }
 		});
+		
+		btnViewTicket.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        frame.dispose();
+		        new CustomerViewTicketGUI(userID); 
+		    }
+		});
 
 	}
 
