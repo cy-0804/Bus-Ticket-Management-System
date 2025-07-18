@@ -236,6 +236,7 @@ Example: error_reporting(0) and ini_set().
 ## **Frontend Application**
 ## 1. Customer Application
 **Purpose**
+
 This application’s main function is to allow customer to interact with system for self service ticketing. To support this service, key functionalities has been implemented which included:
 
 * User authentication
@@ -270,7 +271,9 @@ This application’s main function is to allow customer to interact with system 
 ## 2. Counter Staff Application
 
 **Purpose**
-The counter staff application serves as the main interface for the counter staff at certain stations to perform key ticketing operations. With this application, the counter staff are able to perform tasks including:
+T
+he counter staff application serves as the main interface for the counter staff at certain stations to perform key ticketing operations. With this application, the counter staff are able to perform tasks including:
+
 * Log into their account and selected task to be perform from the dashboard
 * View customers booking details 
 * Search and view for available trips upon customers requests
@@ -372,26 +375,42 @@ Staff View Bus Schedule
 <img width="940" height="1185" alt="image" src="https://github.com/user-attachments/assets/50762485-a402-4483-afa5-10258245861f" />
 
 **Schema Justification**
+
 The database schema for Bus Ticketing System was designed to model a real-world bus booking process in a normalized structure, ensuring data integrity and role separation to support the functionalities of passengers and staff.
 
 * User Management
+
 The tables of users or the role-based tables like customers and staff are used to store the user credentials and role specific attributes such as name, gender and age.
+
 This role-based separation can ensure the proper access control from passengers and staff.
+
 This information will be referenced by table like booking_seats.
+
 * Trip and Bus Management
+
 The table like bus will store bus details such as bus id and plate number while the trip will define the scheduled trips with departure and arrival details.
+
 The trip table will link to seats and booking tables so the seat availability can be tracked.
+
 The trip table also links to the bus table to enable the search functionality.
+
 * Booking and Seats Allocation
+
 The booking table will record the bookings made by staff or customers while the seat table will show the seats availability for every trip.
+
 The booking table which links to the trip and passenger table can track the booking by referencing these tables like bookedBy and tripID.
+
 The seats table that supports the seat availability in both passengers and staff UI can prevent double-booking by validating seat status before booking.
+
 * Station and Bus
+
 These two tables store the data like location and plate number for trip routes and bus assignments.
+
 They are referenced by table like trip and staff to assign trips to physical location.
 
 
 **Data Validation:**
+
 1. Frontend Application
 
 | **Field** | **Validation Rules** |
