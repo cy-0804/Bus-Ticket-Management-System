@@ -1,4 +1,28 @@
-## **Technologies Used**
+//table& diagram not done yet to convert in markdown format
+
+//template only
+
+## **Project Member**
+
+1. ANG CHA YAN (B032310478 S1G1)
+@GITHUB LINK
+2. NATALIE TAN WEI MEI (B032310844 S1G1) @GIT HUB LINK
+3. HO XIN YONG (B032310518 S1G1)
+@GITHUB LINK
+4. CHAI YI JING (B032310827 S1G1)
+@GITHUB LINK
+5. LOH JIA YING (B032310401 S1G2)
+@ GIT HUB LINK
+6. LIM ZHI YING (B032310439 S1G2)
+@ GIT HUB LINK
+
+Lecturer :Dr Mohd Hariz Bin Naim @ Mohayat
+
+## **Project Overview**
+
+## Introduction
+
+## Technologies Used
 
  -   Frontend: Java Swing Designer
        
@@ -14,7 +38,7 @@
 
     
 
-## **Features**
+## Features
 
 Two front-end apps, which are separated by role, which is the staff app and the customer app.
 
@@ -69,31 +93,60 @@ The staff enters the booking ID. If the current time is before departure, the bo
 
 The staff can view all scheduled trips for a given bus and date. The system will display a list of trips including departure/arrival times and status. Staff can update the bus status. For example, from “scheduled” to “boarding”, “departed”, “delayed”).
 
-  
+## **System Architecture**
+**High Level Diagram**
 
-## Interface Design
 
-  
+## **Backend Application**
+**Technology Stack**
+**API Documentation**
+
+## **Frontend Application**
+## 1. Customer Application
+**Purpose**
+This application’s main function is to allow customer to interact with system for self service ticketing. To support this service, key functionalities has been implemented which included:
+
+* User authentication
+* Searching and view available bus trips
+* Selecting preferred seats.
+* Make ticket booking
+* Make payment
+* Generate ticket
+
+**Technology Stack**
+
+**API Integration**
+
+## 2. Counter Staff Application
+
+**Purpose**
+The counter staff application serves as the main interface for the counter staff at certain stations to perform key ticketing operations. With this application, the counter staff are able to perform tasks including:
+* Log into their account and selected task to be perform from the dashboard
+* View customers booking details 
+* Search and view for available trips upon customers requests
+* Manually book bus tickets for walk-in customers
+* Proceed to payment and booking confirmation
+* Check in the passenger for boarding
+* Generate a boarding pass for the customers who have checked in
+* Update the bus trip status, such as "departed," "delayed," "scheduled," and "boarding."
+
+A user-friendly and intuitive user interface is developed for each functionality included in the application in order to ensure that staff can perform the operations in a timely manner. The interfaces also appear to be simple yet well structured so that the manual errors can be minimized and help improve the productivity.
+
+**Technology Stack**
+
+**API Integration**
+
+## **Interface Design**
 
 **Login Page**
-
-  
 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXd6wtHXz_tTpINh75X3vsWEAGpORmyLokOHsSQfaG6flvFjLdJvc7oteyq4v360S0fM-Pt2lQj9vRmI0EQN0db2ZvGp3j3Oz4ZcGogK-7q2UxB7UIjQal6voXTJ1idc4kpB8IGA?key=KxEgPuPIz5T9YTOO2d9d8g)
 
   
-
 **Customer Dashboard**
-
-
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXekphUAs8x2P7PuAFy2_7-5uTspr-ySFm19B1X0mGFP1NYCzSrPJ4F5qv2mdl4Y1Cd4xE9rzaeLKjCR-JtUuWT0GefzgrKfdwePXV6PRrJcAInVUv1scQGPwXJMfdmO0uHqFcaoIA?key=KxEgPuPIz5T9YTOO2d9d8g)
 
-  
-  
-
 **Customer Booking Page**
-
-
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXeYYtc9XU1jmaHwiyKL8iGS203VlMK64yRaBX90Xlx2tqx_IhcIvNtt3KsFwRLXObs0Zj3Lu3EUJ-BFVSnSPUnNF-9cqcOBVcdK6i8-4y4nd-retlRUZxQP2Cgg7wULEFWy6afv7Q?key=KxEgPuPIz5T9YTOO2d9d8g)
 
   
@@ -128,13 +181,19 @@ Staff View Bus Schedule
 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXd_s5WRC7Z2DhJgz76aHhG6XDYj_lkF8sUvfKC1m1GZX0sHkHeJu7Kxoke7CG9c_SNWAMdBHfm53EDF-aE_ahFKjdrbWWYB3X5yn2Gf8YkPl8D8P-jygQ0ghAGK8ezRH1mfNMPnZw?key=KxEgPuPIz5T9YTOO2d9d8g)
 
-  
+ 
 
-## Database Design
-
-  
+## **Database Design**
 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXejCbMiHNZk_k1r0l060PcENVb5eIyJDKKCTlCXDuQLi0YrNeduBzLFlX7eE7MmB22i8xDXgzE-mKGUSypuedYuyO3eNaW_I-bDx9208pZzNYX2oy_mt1sv94lNlP7gNHVouzTD6w?key=KxEgPuPIz5T9YTOO2d9d8g)
+
+**Schema Justification**
+
+**Data Validation**
+1. Frontend Application
+
+2. Backend Application
+
 
   
 
