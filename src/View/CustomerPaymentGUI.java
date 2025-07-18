@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
@@ -13,6 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.*;
+import model.Booking;
+import model.Seat;
+import model.Passenger;
+import model.BookingSeats;
 
 public class CustomerPaymentGUI {
     private int tripID, userID;
@@ -120,7 +125,7 @@ public class CustomerPaymentGUI {
             for (int i = 0; i < passengerForms.size(); i++) {
                 PassengerForm pf = passengerForms.get(i);
                 if (!pf.isFilled()) {
-                	JOptionPane.showMessageDialog(frame, "Please fill in all fields for seat " + pf.seatNum);
+                    JOptionPane.showMessageDialog(frame, "Please fill in all fields for seat " + pf.seatNum);
                     return;
                 }
 
@@ -156,19 +161,31 @@ public class CustomerPaymentGUI {
             os.close();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String response = in.readLine();
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
             in.close();
 
-            if (response != null && response.toLowerCase().contains("success")) {
-                JOptionPane.showMessageDialog(frame, "Booking successful!");
-                
-             // Generate PDF ticket
+            // Parse JSON response
+            JSONObject jsonResponse = new JSONObject(response.toString());
+
+            if (jsonResponse.getString("status").equalsIgnoreCase("success")) {
+                String bookingID = jsonResponse.getString("bookingID");
+
+                JOptionPane.showMessageDialog(frame, "Booking successful! Booking ID: " + bookingID);
+
+                // ✅ Fetch booking seats from backend using bookingID
+                List<BookingSeats> seatsList = fetchBookingSeats(bookingID);
+
+                // ✅ Generate PDF ticket
                 String userHome = System.getProperty("user.home");
                 String filePath = userHome + "/Downloads/Ticket.pdf";
                 PDFTicketGenerator.generate(filePath, origin, destination, departDate, arrivalDate,
-                                            plateNo, String.format("%.2f", totalPrice), passengerForms);
-                
-                // Open the PDF
+                                            plateNo, String.format("%.2f", totalPrice), seatsList);
+
+                // ✅ Open the PDF
                 try {
                     if (Desktop.isDesktopSupported()) {
                         Desktop.getDesktop().open(new File(filePath));
@@ -179,10 +196,10 @@ public class CustomerPaymentGUI {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(frame, "Failed to open the PDF file.");
                 }
-                
+
                 frame.dispose();
             } else {
-                JOptionPane.showMessageDialog(frame, "Booking failed: " + response);
+                JOptionPane.showMessageDialog(frame, "Booking failed: " + jsonResponse.toString());
             }
 
         } catch (Exception e) {
@@ -226,4 +243,52 @@ public class CustomerPaymentGUI {
                     && !ageField.getText().trim().isEmpty();
         }
     }
+    
+    private List<BookingSeats> fetchBookingSeats(String bookingID) {
+        List<BookingSeats> seatsList = new ArrayList<>();
+
+        try {
+            URL url = new URL("http://localhost/webServiceJSON/BookingResponse.php?bookingID=" + bookingID);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            in.close();
+
+            JSONArray arr = new JSONArray(response.toString());
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+
+                // Extract passenger
+                Passenger passenger = new Passenger();
+                passenger.setName(obj.getString("name"));
+                passenger.setGender(obj.getString("gender"));
+                passenger.setTelNo(obj.getString("telNo"));
+                passenger.setAge(obj.getInt("age"));
+
+                // Extract seat
+                Seat seat = new Seat();
+                seat.setSeatNumber(obj.getString("seatNumber"));
+
+                // Create booking seat record
+                BookingSeats bookingSeat = new BookingSeats();
+                bookingSeat.setSeat(seat);
+                bookingSeat.setPassenger(passenger);
+                seatsList.add(bookingSeat);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error fetching booking seat data");
+        }
+
+        return seatsList;
+    }
+
 }

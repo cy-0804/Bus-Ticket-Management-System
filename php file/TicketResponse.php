@@ -14,9 +14,8 @@ if ($dbConn->connect_error) {
     exit;
 }
 
-// Read the JSON input
 $input = file_get_contents("php://input");
-$data = json_decode($input, true); // decode as associative array
+$data = json_decode($input, true); 
 
 if (!isset($data['userID'])) {
     echo json_encode(["status" => "fail", "message" => "No userID received"]);
@@ -25,7 +24,6 @@ if (!isset($data['userID'])) {
 
 $userID = $data['userID'];
 
-// Updated SQL: Added departureDate and arrivalDate
 $sql = "
 SELECT 
     b.bookingID, 

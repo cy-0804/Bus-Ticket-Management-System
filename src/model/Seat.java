@@ -2,12 +2,12 @@ package model;
 
 public class Seat {
 	private int seatID;
-	private int seatNumber;
+	private String seatNumber;
 	private Trip trip;
 	private String status;
 	
 	public Seat() {}
-	public Seat(int seatID, int seatNumber, Trip trip, String status) {
+	public Seat(int seatID, String seatNumber, Trip trip, String status) {
 		this.seatID = seatID;
 		this.seatNumber = seatNumber;
 		this.trip = trip;
@@ -19,10 +19,10 @@ public class Seat {
 	public void setSeatID(int seatID) {
 		this.seatID = seatID;
 	}
-	public int getSeatNumber() {
+	public String getSeatNumber() {
 		return seatNumber;
 	}
-	public void setSeatNumber(int seatNumber) {
+	public void setSeatNumber(String seatNumber) {
 		this.seatNumber = seatNumber;
 	}
 	public Trip getTrip() {

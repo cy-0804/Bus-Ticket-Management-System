@@ -30,7 +30,7 @@ public class SeatRepository {
                 while (rs.next()) {
                     Seat seat = new Seat();
                     seat.setSeatID(rs.getInt("seatID"));
-                    seat.setSeatNumber(rs.getInt("seatNumber"));
+                    seat.setSeatNumber(rs.getString("seatNumber"));
                     seat.setStatus(rs.getString("status"));
 
                     seats.add(seat);

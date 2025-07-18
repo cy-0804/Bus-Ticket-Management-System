@@ -12,12 +12,17 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
+
+import model.BookingSeats;
+import model.Passenger;
+import model.Seat;
+
 import com.itextpdf.layout.property.HorizontalAlignment;
 
 public class PDFTicketGenerator {
 
-    public static void generate(String filePath, String origin, String destination, String departDate, String arrivalDate,
-                                 String plateNo, String totalPrice, List<CustomerPaymentGUI.PassengerForm> passengers) {
+	public static void generate(String filePath, String origin, String destination, String departDate, String arrivalDate,
+            String plateNo, String totalPrice, List<BookingSeats> bookingSeatsList) {
         try {
             PdfWriter writer = new PdfWriter(new FileOutputStream(filePath));
             PdfDocument pdf = new PdfDocument(writer);
@@ -72,12 +77,15 @@ public class PDFTicketGenerator {
             passengerTable.addHeaderCell(makeHeaderCell("Phone"));
             passengerTable.addHeaderCell(makeHeaderCell("Age"));
 
-            for (CustomerPaymentGUI.PassengerForm pf : passengers) {
-                passengerTable.addCell(makeValueCell(pf.seatNum));
-                passengerTable.addCell(makeValueCell(pf.nameField.getText()));
-                passengerTable.addCell(makeValueCell(pf.genderBox.getSelectedItem().toString()));
-                passengerTable.addCell(makeValueCell(pf.telField.getText()));
-                passengerTable.addCell(makeValueCell(pf.ageField.getText()));
+            for (BookingSeats bs : bookingSeatsList) {
+                Passenger p = bs.getPassenger();
+                Seat seat = bs.getSeat();
+
+                passengerTable.addCell(makeValueCell(seat.getSeatNumber())); // assuming you have getSeatNumber()
+                passengerTable.addCell(makeValueCell(p.getName()));
+                passengerTable.addCell(makeValueCell(p.getGender()));
+                passengerTable.addCell(makeValueCell(p.getTelNo()));
+                passengerTable.addCell(makeValueCell(String.valueOf(p.getAge())));
             }
 
             document.add(passengerTable);

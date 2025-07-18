@@ -16,6 +16,10 @@ import javax.swing.event.PopupMenuEvent;
 
 import org.json.*;
 
+import model.BookingSeats;
+import model.Passenger;
+import model.Seat;
+
 public class CustomerViewTicketGUI {
 
     private JFrame frame;
@@ -69,8 +73,10 @@ public class CustomerViewTicketGUI {
             if (selected != null && ticketMap.containsKey(selected)) {
                 TicketInfo t = ticketMap.get(selected);
                 String filePath = System.getProperty("user.home") + "/Downloads/Ticket-" + t.bookingID + ".pdf";
+                List<BookingSeats> bookingSeatsList = fetchBookingSeats(t.bookingID);
                 PDFTicketGenerator.generate(filePath, t.origin, t.destination, t.departDate,
-                        t.arrivalDate, t.plateNo, String.format("%.2f", t.totalPrice), Collections.emptyList());
+                        t.arrivalDate, t.plateNo, String.format("%.2f", t.totalPrice), bookingSeatsList);
+
                 try {
                     if (Desktop.isDesktopSupported()) {
                         Desktop.getDesktop().open(new File(filePath));
@@ -180,5 +186,51 @@ public class CustomerViewTicketGUI {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private List<BookingSeats> fetchBookingSeats(String bookingID) {
+        List<BookingSeats> seatsList = new ArrayList<>();
+
+        try {
+            URL url = new URL("http://localhost/webServiceJSON/BookingResponse.php?bookingID=" + bookingID);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            in.close();
+
+            JSONArray arr = new JSONArray(response.toString());
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+
+                // Passenger
+                Passenger passenger = new Passenger();
+                passenger.setName(obj.getString("name"));
+                passenger.setGender(obj.getString("gender"));
+                passenger.setTelNo(obj.getString("telNo"));
+                passenger.setAge(obj.getInt("age"));
+
+                // Seat
+                Seat seat = new Seat();
+                seat.setSeatNumber(obj.getString("seatNumber"));
+
+                // Combine into BookingSeats
+                BookingSeats bs = new BookingSeats();
+                bs.setPassenger(passenger);
+                bs.setSeat(seat);
+                seatsList.add(bs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error fetching booking seat data");
+        }
+
+        return seatsList;
     }
 }
