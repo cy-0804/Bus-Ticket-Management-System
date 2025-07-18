@@ -21,7 +21,27 @@ Lecturer :Dr Mohd Hariz Bin Naim @ Mohayat
 
 ## Introduction
 
-The Bus Ticketing System is a distributed application which designed to manage the booking process of bus tickets for both passengers and staff. The system consists of two main applications that separated by roles which are Customer Application and Staff Application. Both applications are communicate through the backend application which developed in PHP that can interact with databases. Besides, the system also use DocSpring API to generate boarding passes for the passengers.
+The Bus Ticketing System is a distributed application which is designed to manage the booking process of bus tickets for both passengers and staff. The system consists of two main applications separated by roles which are Customer Application and Staff Application. Both applications are communicated through the backend application which is developed in PHP that can interact with databases. Besides, the system also uses DocSpring API to generate boarding passes for the passengers.
+
+Frontend applications are built with Java Swing while the backend is PHP and MySQL. The system emphasizes role-based access control, data validation and a smooth communication between components through RESTful API.
+
+The system has offered self-service functions for the customer such as searches for bus trips and booking tickets. While the staff can manually book the ticket for the customer, check-in passengers and view the bus schedule.
+
+
+Features:  
+
+-Role-based login for customers and staff 
+
+-Online bus searching and booking interface for passengers
+
+-Ticket generation for passengers
+
+-Manual booking and passengers check-in system for staff
+
+-Seat availability and status updates for staff
+
+-Real-time bus status updates for staff
+
 
 
 ## Technologies Used
@@ -94,24 +114,123 @@ The staff enters the booking ID. If the current time is before departure, the bo
 
 The staff can view all scheduled trips for a given bus and date. The system will display a list of trips including departure/arrival times and status. Staff can update the bus status. For example, from “scheduled” to “boarding”, “departed”, “delayed”).
 
+**Third Party Integration**
+
+The system uses RESTful APIs developed in PHP to enable communication between client applications with the MySQL database. Tools like Postman are used for API testing, while XAMPP will provide a local Apache-MySQL server environment. These integrations ensure modularity and allow the frontend applications to interact with backend services efficiently. DocSpring API also used to generate and download the boarding pass for passengers in PDF format.
+
 ## **System Architecture**
 **High Level Diagram**
 <img width="940" height="581" alt="image" src="https://github.com/user-attachments/assets/787d085b-7458-4942-8974-af478dae4ef0" />
 
 
 
-## **Backend Application**
+**Backend Application**
+
 **Technology Stack**
 
-1. **Programming Language: PHP**
-2. **Database: MySQL**
-3. **Web Server: Apache (via XAMPP)**
-4. **Development Tool: XAMPP**
-5. **Data Format: JSON (for input/output)**
+| **COMPONENT** | **TECHNOLOGY** |
+| --- | --- |
+| Programming Language | PHP ||
+| Database | MySQL ||
+| Web Server | Apache (via XAMPP) ||
+| Development Tool | XAMPP ||
+| Data Format | JSON (for input/output) ||
 
 **Api Documentation**
 
-1. **List of API endpoints and HTTP method**
+* List of API endpoints, HTTP method and Required Request Parameters
+
+| **API ENDPOINT (PHP)** | **METHOD** | **REQUIRED PARAMETERS** |
+| --- | --- | --- |
+| /login.php | POST | username, password ||
+| /BusResponse.php | GET | bookingID (query) ||
+| /BookingSeatRequest.php | GET | tripID (query) ||
+| /BookingRequest.php | POST | tripID, bookedBy, paymentMethod, totalPrice, passengers\[\] ||
+| /BookingResponse.php | GET | bookingID (query) ||
+| /TicketResponse.php | POST | userID ||
+| /staff_book_ticket.php | GET | origin, destination, date (query) ||
+| /get_available_seat.php | POST | tripID ||
+| /confirm_payment.php | POST | name, gender, phone, age, paymentMethod, totalAmount, tripID, userID, selectedSeats\[\] ||
+| /get_booking_info.php | POST | booking_id ||
+| /checkin(1).php | POST | booking_id || 
+| /staff_view_bus.php | GET | busID, date (query) ||
+| /bus_status_update.php | POST | tripID, status ||
+
+* Header and body formats (with JSON examples)
+
+| **API ENDPOINT (PHP)** | **HEADER** | **BODY FORMATS/**<br><br>**URL EXAMPLE** |
+| --- | --- | --- |
+| **/**login.php | Content-Type: application/json | json { "username": "aliabu", "password": "pass123" } ||
+| /BusResponse.php | None | /BusResponse.php?bookingID=BKG001 ||
+| /BookingSeatRequest.php | None | /BookingSeatRequest.php?tripID=TRP001 ||
+| /BookingRequest.php | Content-Type: application/json | json { "tripID": 1, "bookedBy": 1, "paymentMethod": "cash", "totalPrice": 45.0, "passengers": \[{ "name": "Ahmad Nazri", "gender": "male", "telNo": "0123456789", "age": 25, "seatIDs": \[A3\] }\] } ||
+| /BookingResponse.php | None | /BookingResponse.php?bookingID=BKG001 ||
+| /TicketResponse.php | Content-Type: application/json | json { "userID": 1 } ||
+| /staff_book_ticket.php | None | /staff_book_ticket.php?origin=TBS&destination=Melaka&date=2025-07-20 ||
+| /get_available_seat.php | Content-Type: application/json | json { "tripID": 1 } ||
+| /confirm_payment.php | Content-Type: application/json | json { "name": "Ahmad Nazri", "gender": "male", "phone": "0123456789", "age": 25, "paymentMethod": "cash", "totalAmount": 45.0, "tripID": 1, "userID": 3, "selectedSeats": \[ { "seatID": A3 } \] } ||
+| /get_booking_info.php | Content-Type: application/json | json { "booking_id": "BKG001" } ||
+| /checkin(1).php | Content-Type: application/json | json { "booking_id": "BKG001" } ||
+| /staff_view_bus.php | None | /staff_view_bus.php?busID=BUS001&date=2025-07-20 ||
+| /bus_status_update.php | Content-Type: application/json | json { "tripID": 1, "status": "departed" } ||
+
+* Example of success and error responses
+
+ /checkin.php
+
+| Type | HTTP Status | JSON Response |
+| --- | --- | --- |
+| Success | 200 OK | { "status": "success", "message": "Status updated to 'checked-in'" } | |
+| Error: Missing booking_id | 400 Bad Request | { "status": "fail", "message": "Missing booking_id" } ||
+| Error: Database Connection Error | 500 Internal Server Error | { "status": "fail", "message": "Database connection failed: \[error\]" } ||
+| Error: Update Failure | 200 OK | { "status": "fail", "message": "Database update failed" } ||
+
+/staff_view_bus.php
+
+| Type | HTTP Status | JSON Response |
+| --- | --- | --- |
+| Success | 200 OK | \[ { "tripID": "T001", "departureTime": "...", "arrivalTime": "...", "fromStation": "...", "toStation": "...", "status": "..." }, ... \] ||
+| Error: Missing Parameters | 400 Bad Request | { "status": "fail", "message": "Missing busID or date" } ||
+| Error: Database Connection Error | 500 Internal Server Error | { "status": "fail", "message": "Database connection failed" } ||
+| Error: Query Error | 500 Internal Server Error | { "status": "fail", "message": "Query failed: \[error\]" } | |
+
+/bus_status_update.php
+
+| Type | HTTP Status | JSON Response |
+| --- | --- | --- |
+| Success | 200 OK | { "status": "success", "message": "Trip status updated successfully", "tripID": 12, "newStatus": "boarding" } ||
+| Error: Missing or Invalid Input | 400 Bad Request | { "status": "fail", "message": "Missing or invalid tripID or status" } ||
+| Error: Invalid Status Value | 400 Bad Request | { "status": "fail", "message": "Invalid status value" } ||
+| Error: No Update | 200 OK | { "status": "fail", "message": "No trip was updated. Trip ID may not exist or status unchanged." } ||
+| Error: Database Connection Error | 500 Internal Server Error | { "status": "fail", "message": "Database connection failed" } ||
+
+**4\. Security**
+
+1. Prepared Statements (SQL Injection Protection)
+
+Description: SQL queries use prepared statements with bind_param() to securely inject variables into queries.
+
+Explanation: Prevents SQL injection attacks.
+
+Example: $stmt = $dbConn->prepare($sql);
+
+$stmt->bind_param("s", $username);
+
+1. Input Validation
+
+Description: Checks whether required fields like username, password, or booking_id are empty.
+
+Explanation: Prevents null or malformed data from being processed.
+
+Example: if (empty($username)
+
+1. Error Reporting Turned Off
+
+Description: Error messages are suppressed via error_reporting(0) and ini_set().
+
+Explanation: Prevents internal error details from being exposed to users, which is good practice.
+
+Example: error_reporting(0) and ini_set().
 
 
 
@@ -253,6 +372,25 @@ Staff View Bus Schedule
 **Entity-Relationship Diagram (ERD)**
 <img width="940" height="1185" alt="image" src="https://github.com/user-attachments/assets/50762485-a402-4483-afa5-10258245861f" />
 
+**Schema Justification**
+The database schema for Bus Ticketing System was designed to model a real-world bus booking process in a normalized structure, ensuring data integrity and role separation to support the functionalities of passengers and staff.
+
+* User Management
+The tables of users or the role-based tables like customers and staff are used to store the user credentials and role specific attributes such as name, gender and age.
+This role-based separation can ensure the proper access control from passengers and staff.
+This information will be referenced by table like booking_seats.
+* Trip and Bus Management
+The table like bus will store bus details such as bus id and plate number while the trip will define the scheduled trips with departure and arrival details.
+The trip table will link to seats and booking tables so the seat availability can be tracked.
+The trip table also links to the bus table to enable the search functionality.
+* Booking and Seats Allocation
+The booking table will record the bookings made by staff or customers while the seat table will show the seats availability for every trip.
+The booking table which links to the trip and passenger table can track the booking by referencing these tables like bookedBy and tripID.
+The seats table that supports the seat availability in both passengers and staff UI can prevent double-booking by validating seat status before booking.
+* Station and Bus
+These two tables store the data like location and plate number for trip routes and bus assignments.
+They are referenced by table like trip and staff to assign trips to physical location.
+
 
 **Data Validation:**
 1. Frontend Application
@@ -299,18 +437,17 @@ Below is the system’s use case diagram.
 1.  Download Source File.
     
 
-  
-
 2.  Import SQL to your database server. In this project we use PhpMy Admin to create database and import. The sql code in in folder db from your downloaded resources.
     
 
-  
-
+ 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXdaIsqLBwYZA0edJFbc3TxIxvrll8CIgMhBML7-MrH2i-IFB9tW8fDKIArGtGVveItSrxlHcrLMeGqO3DZnDAdoxJggF3by-G2FaVv9tDl8eSZNtdHyvWeGHsQcRDW8otiPeDCT6w?key=KxEgPuPIz5T9YTOO2d9d8g)
 
   
 
 3.  Configure your connection to database. In this project we are using XAMPP. The php file need to be put into the following folder structure : `XAMPP\htdocs\busApi\<php files>.` 
+
+
 
 4. Make sure the Apache and MySQL is start in your server.
 
