@@ -271,8 +271,8 @@ This application’s main function is to allow customer to interact with system 
 ## 2. Counter Staff Application
 
 **Purpose**
-T
-he counter staff application serves as the main interface for the counter staff at certain stations to perform key ticketing operations. With this application, the counter staff are able to perform tasks including:
+
+The counter staff application serves as the main interface for the counter staff at certain stations to perform key ticketing operations. With this application, the counter staff are able to perform tasks including:
 
 * Log into their account and selected task to be perform from the dashboard
 * View customers booking details 
