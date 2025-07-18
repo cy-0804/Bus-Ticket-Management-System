@@ -1,103 +1,76 @@
 package View;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Desktop;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.itextpdf.layout.font.FontInfo;
-
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.awt.event.*;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
+import org.json.*;
 
 public class CustomerViewTicketGUI {
 
-	private JFrame frame;
-	private JComboBox<String> ticketDropdown;
+    private JFrame frame;
+    private JComboBox<String> ticketDropdown;
     private JButton viewTicketButton;
     private Map<String, TicketInfo> ticketMap = new HashMap<>();
     private JButton btnBack;
     private int userID;
 
-	/**
-	 * Create the application.
-	 * @wbp.parser.entryPoint
-	 */
+    // Labels to show booking details
+    private JLabel lblBookingID, lblOrigin, lblDestination, lblDepart, lblArrival;
+
     public CustomerViewTicketGUI(int userID) {
-    	this.userID = userID;  
-        initialize();          
+        this.userID = userID;
+        initialize();
         fetchTicketList(userID);
     }
-	/**
-	 * Initialize the contents of the frame.
-	 * @wbp.parser.entryPoint
-	 */
-	private void initialize() {
-		frame = new JFrame("View Ticket");
-        frame.setSize(500, 300);
+
+    private void initialize() {
+        frame = new JFrame("View Ticket");
+        frame.setSize(650, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.getContentPane().setLayout(null);
         frame.getContentPane().setBackground(new Color(130, 182, 234));
 
         JLabel lblTitle = new JLabel("Select Ticket to View");
         lblTitle.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.PLAIN, 22));
-        lblTitle.setBounds(140, 20, 250, 30);
+        lblTitle.setBounds(220, 20, 250, 30);
         frame.getContentPane().add(lblTitle);
 
         ticketDropdown = new JComboBox<>();
-        for (String key : ticketMap.keySet()) {
-            ticketDropdown.addItem(key);
-        }
-        ticketDropdown.setBounds(50, 80, 400, 30);
+        ticketDropdown.setBounds(50, 80, 550, 30);
+        ticketDropdown.addItem("Select your ticket...");
+        ticketDropdown.setSelectedIndex(0);
+        ticketDropdown.addPopupMenuListener(new PopupMenuListener() {
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                if (ticketDropdown.getItemCount() <= 1) fetchTicketList(userID);
+            }
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+            public void popupMenuCanceled(PopupMenuEvent e) {}
+        });
         frame.getContentPane().add(ticketDropdown);
 
         viewTicketButton = new JButton("Generate & View Ticket");
         viewTicketButton.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
-        viewTicketButton.setBounds(150, 150, 200, 30);
+        viewTicketButton.setBounds(200, 150, 200, 30);
         frame.getContentPane().add(viewTicketButton);
-        
-        btnBack = new JButton("Back");
-        btnBack.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
-        btnBack.setBounds(379, 212, 85, 30);
-        frame.getContentPane().add(btnBack);
-        
-        btnBack.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            frame.dispose(); 
-	            new CustomerDashboardGUI(userID); 
-	        }
-	    });
 
         viewTicketButton.addActionListener(e -> {
             String selected = (String) ticketDropdown.getSelectedItem();
             if (selected != null && ticketMap.containsKey(selected)) {
                 TicketInfo t = ticketMap.get(selected);
-                // PDF Generation
                 String filePath = System.getProperty("user.home") + "/Downloads/Ticket-" + t.bookingID + ".pdf";
                 PDFTicketGenerator.generate(filePath, t.origin, t.destination, t.departDate,
-                        t.arrivalDate, t.plateNo, String.format("%.2f", t.totalPrice), Collections.emptyList()); // Pass passengerForms if available
-
+                        t.arrivalDate, t.plateNo, String.format("%.2f", t.totalPrice), Collections.emptyList());
                 try {
                     if (Desktop.isDesktopSupported()) {
                         Desktop.getDesktop().open(new File(filePath));
@@ -111,13 +84,20 @@ public class CustomerViewTicketGUI {
             }
         });
 
-        frame.setVisible(true);
-	}
-	
-	private void fetchTicketList(int userID) {
-        try {
-        	System.out.println("DEBUG: userID = " + userID);
+        btnBack = new JButton("Back");
+        btnBack.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 20));
+        btnBack.setBounds(500, 200, 85, 30);
+        frame.getContentPane().add(btnBack);
+        btnBack.addActionListener(e -> {
+            frame.dispose();
+            new CustomerDashboardGUI(userID);
+        });
 
+        frame.setVisible(true);
+    }
+
+    private void fetchTicketList(int userID) {
+        try {
             URL url = new URL("http://localhost/webServiceJSON/TicketResponse.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -142,23 +122,34 @@ public class CustomerViewTicketGUI {
             JSONObject responseJson = new JSONObject(responseStr.toString());
             if (responseJson.getString("status").equals("success")) {
                 JSONArray dataArray = responseJson.getJSONArray("data");
-                ticketMap.clear(); // Clear old data
+                ticketMap.clear();
+                
+                ticketDropdown.removeAllItems(); 
+                ticketDropdown.addItem("Select your ticket..."); // optional placeholder
+
+                Set<String> uniqueBookingIDs = new HashSet<>();
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject obj = dataArray.getJSONObject(i);
-                    System.out.println(obj.toString()); // ← Debug print
-                    String key = String.format("Trip %s | Seat %s | %s → %s | %s to %s",
-                            obj.getString("tripID"),
-                            obj.getString("seatNumber"),
-                            obj.getString("origin"),
-                            obj.getString("destination"),
-                            obj.getString("departureDate"),
-                            obj.getString("arrivalDate"));
-                    ticketMap.put(key, new TicketInfo(obj));
+                    String bookingID = obj.getString("bookingID");
+
+                    if (!uniqueBookingIDs.contains(bookingID)) {
+                        uniqueBookingIDs.add(bookingID);
+
+                        String label = String.format("Booking #%s | %s → %s | %s",
+                                bookingID,
+                                obj.getString("origin"),
+                                obj.getString("destination"),
+                                obj.getString("departureDate"));
+
+                        ticketMap.put(label, new TicketInfo(obj));
+                        ticketDropdown.addItem(label);
+                    }
                 }
 
-                ticketDropdown.removeAllItems(); 
+                ticketDropdown.removeAllItems();
+                ticketDropdown.addItem("Select your ticket...");
                 for (String key : ticketMap.keySet()) {
-                    ticketDropdown.addItem(key); 
+                    ticketDropdown.addItem(key);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No tickets found.");
@@ -168,29 +159,26 @@ public class CustomerViewTicketGUI {
             JOptionPane.showMessageDialog(null, "Error fetching tickets.");
         }
     }
-	
-	static class TicketInfo {
 
-		String bookingID, tripID, seatID, seatNumber, origin, destination, departDate, arrivalDate, plateNo;
-	    double totalPrice;
+    static class TicketInfo {
+        String bookingID, tripID, seatID, seatNumber, origin, destination, departDate, arrivalDate, plateNo;
+        double totalPrice;
 
         public TicketInfo(JSONObject obj) {
             try {
-            	this.bookingID = obj.getString("bookingID");
-				this.tripID = obj.getString("tripID");
-	            this.seatID = obj.getString("seatID");
-	            this.seatNumber = obj.getString("seatNumber");
-	            this.origin = obj.getString("origin");
-	            this.destination = obj.getString("destination");
-	            this.departDate = obj.getString("departureDate");   
-	            this.arrivalDate = obj.getString("arrivalDate");
-	            this.plateNo = obj.getString("plateNo");
-	            this.totalPrice = obj.getDouble("totalPrice");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+                this.bookingID = obj.getString("bookingID");
+                this.tripID = String.valueOf(obj.getInt("tripID"));
+                this.seatID = String.valueOf(obj.getInt("seatID"));
+                this.seatNumber = obj.getString("seatNumber");
+                this.origin = obj.getString("origin");
+                this.destination = obj.getString("destination");
+                this.departDate = obj.getString("departureDate");
+                this.arrivalDate = obj.getString("arrivalDate");
+                this.plateNo = obj.getString("plateNo");
+                this.totalPrice = obj.getDouble("totalPrice");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

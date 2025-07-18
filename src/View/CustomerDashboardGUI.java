@@ -40,7 +40,7 @@ public class CustomerDashboardGUI {
 		JLabel lblNewLabel = new JLabel("Customer Ticket Booking System");
 		lblNewLabel.setForeground(new Color(0, 64, 128));
 		lblNewLabel.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.PLAIN, 25));
-		lblNewLabel.setBounds(66, 40, 308, 28);
+		lblNewLabel.setBounds(66, 40, 350, 28);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Ticket Booking");
