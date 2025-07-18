@@ -96,7 +96,8 @@ The staff can view all scheduled trips for a given bus and date. The system will
 
 ## **System Architecture**
 **High Level Diagram**
-<img width="974" height="588" alt="image" src="https://github.com/user-attachments/assets/94bf7e72-4172-4e80-a0a1-f429a996493f" />
+<img width="940" height="581" alt="image" src="https://github.com/user-attachments/assets/787d085b-7458-4942-8974-af478dae4ef0" />
+
 
 
 ## **Backend Application**
