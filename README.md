@@ -296,7 +296,7 @@ Several technologies are applied to the application development:
 **API Integration**
 | **FUNCTIONALITY** | **METHOD** | **API ENDPOINT (PHP)** | **DESCRIPTION** |
 | --- | --- | --- | --- |
-| Login | POST | **/**login.php | Handles user authentication where the backend application receives login credentials from the user and validates the credentials. After that, it returns a JSON response indicating login success or failure, along with requested user data. ||
+| Login | POST | /login.php | Handles user authentication where the backend application receives login credentials from the user and validates the credentials. After that, it returns a JSON response indicating login success or failure, along with requested user data. ||
 | Trip Search | GET | /staff_book_ticket.php | When the frontend application makes a fetch trip request, the backend application returns a list of available trips based on the selected destination and departure date. ||
 | Manual Book Ticket | POST | /get_available_seat.php | The backend application will retrieve the number of seats available and their seat number based on the trip the customer chooses. ||
 || POST | /confirm_payment.php | The counter staff will manually enter the customer’s details, their selection of seat, and payment method. These data will be passed to the backend application and will update the database. ||
