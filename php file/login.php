@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-error_reporting(0); // Optional: hide warnings
+error_reporting(0); 
 ini_set('display_errors', 0);
 
 $hostAddr = "localhost";

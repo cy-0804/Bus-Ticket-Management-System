@@ -8,7 +8,6 @@ $user = "root";
 $pass = "";
 $port = 3306;
 
-// Connect to MySQL database
 $conn = new mysqli($host, $user, $pass, $dbname, $port);
 if ($conn->connect_error) {
     echo json_encode([

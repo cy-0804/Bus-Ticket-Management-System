@@ -29,7 +29,6 @@ public class CustomerViewTicketGUI {
     private JButton btnBack;
     private int userID;
 
-    // Labels to show booking details
     private JLabel lblBookingID, lblOrigin, lblDestination, lblDepart, lblArrival;
 
     public CustomerViewTicketGUI(int userID) {
@@ -209,18 +208,15 @@ public class CustomerViewTicketGUI {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
 
-                // Passenger
                 Passenger passenger = new Passenger();
                 passenger.setName(obj.getString("name"));
                 passenger.setGender(obj.getString("gender"));
                 passenger.setTelNo(obj.getString("telNo"));
                 passenger.setAge(obj.getInt("age"));
 
-                // Seat
                 Seat seat = new Seat();
                 seat.setSeatNumber(obj.getString("seatNumber"));
 
-                // Combine into BookingSeats
                 BookingSeats bs = new BookingSeats();
                 bs.setPassenger(passenger);
                 bs.setSeat(seat);

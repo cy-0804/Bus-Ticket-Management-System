@@ -10,7 +10,6 @@ import java.util.List;
 
 public class SeatRepository {
 
-    //Get available seats for a specific trip
     public List<Seat> getAvailableSeats(int tripId) throws SQLException {
         List<Seat> seats = new ArrayList<>();
 
@@ -41,7 +40,6 @@ public class SeatRepository {
         return seats;
     }
 
-    //Mark a seat as booked
     public void markSeatAsBooked(int seatId) throws SQLException {
         String sql = "UPDATE seat SET status = 'booked' WHERE seatID = ?";
 
@@ -53,7 +51,6 @@ public class SeatRepository {
         }
     }
 
-    //Reset seat to available
     public void releaseSeat(int seatId) throws SQLException {
         String sql = "UPDATE seat SET status = 'available' WHERE seatID = ?";
 
@@ -65,7 +62,6 @@ public class SeatRepository {
         }
     }
 
-    //Assign seats to a booking
     public void assignSeats(String bookingId, List<Integer> seatIds) throws SQLException {
         String sql = "INSERT INTO booking_seats (bookingID, seatID) VALUES (?, ?)";
 

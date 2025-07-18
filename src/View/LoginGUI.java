@@ -147,7 +147,7 @@ public class LoginGUI {
 					});
 				}
 
-				frame.dispose(); // close login window
+				frame.dispose(); 
 			} else {
 				String message = jsonResponse.getString("message");
 				System.out.println("Login failed: " + message);

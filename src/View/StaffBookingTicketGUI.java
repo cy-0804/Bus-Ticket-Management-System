@@ -83,7 +83,6 @@ public class StaffBookingTicketGUI {
 		btnBack.setBounds(560, 270, 94, 30);
 		frame.getContentPane().add(btnBack);
 		
-		// Table 
 		String[] columnNames = {"Trip ID", "From", "To", "Departure Time", "Arrival Time", "Plate No", "Price (RM)", "Seats"};
 		tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -97,19 +96,18 @@ public class StaffBookingTicketGUI {
 		scrollPane.setBounds(50, 320, 700, 200); 
 		frame.getContentPane().add(scrollPane);
 
-		// Row selection
 		tripsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) { 
                     int selectedRow = tripsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        // Extract tripID and price
-                        selectedTripID = (int) tripsTable.getValueAt(selectedRow, 0); 
+
+                    	selectedTripID = (int) tripsTable.getValueAt(selectedRow, 0); 
                         selectedPrice = (double) tripsTable.getValueAt(selectedRow, 6); 
                         confirmButton.setEnabled(true); 
                     } else {
-                        // No row selected
+                        
                         selectedTripID = -1;
                         selectedPrice = 0.0;
                         confirmButton.setEnabled(false); 
@@ -138,7 +136,6 @@ public class StaffBookingTicketGUI {
 				String destination = destinationBox.getSelectedItem().toString();
 				String date = departDateField.getText().trim();
 
-				// Validation
 				if (origin.isEmpty()) {
 					JOptionPane.showMessageDialog(frame, "Please enter an origin.", "Input Error", JOptionPane.WARNING_MESSAGE);
 					return;
@@ -156,7 +153,7 @@ public class StaffBookingTicketGUI {
 					return;
 				}
 				try {
-                    LocalDate.parse(date); // Validate date format
+                    LocalDate.parse(date); 
                 } catch (DateTimeParseException ex) {
                     JOptionPane.showMessageDialog(frame, "Invalid date format! Please use YYYY-MM-DD.", "Input Error", JOptionPane.WARNING_MESSAGE);
                     return;
@@ -181,7 +178,7 @@ public class StaffBookingTicketGUI {
 	}
 
 	private void fetchTripData(String origin, String destination, String date) throws Exception {
-		// Clear previous search results and disable confirm button
+
 		tableModel.setRowCount(0); 
 		confirmButton.setEnabled(false);
 		selectedTripID = -1; 

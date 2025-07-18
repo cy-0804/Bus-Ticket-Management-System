@@ -142,7 +142,6 @@ public class Staff_CheckInGUI {
 			}
 		});
 
-		//to update if check in
 		btnCheckin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String bookingId = txtBookingId.getText().trim();
@@ -166,7 +165,6 @@ public class Staff_CheckInGUI {
 			}
 		});
 
-	    // Print Boarding Pass
 		btnPrint.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        if (checkInData == null) {
@@ -174,7 +172,6 @@ public class Staff_CheckInGUI {
 		            return;
 		        }
 
-		        // Show loading dialog
 		        JDialog loadingDialog = new JDialog(frame, "Generating PDF...", true);
 		        JLabel loadingLabel = new JLabel("Generating.......");
 		        loadingDialog.add(loadingLabel);
@@ -290,7 +287,7 @@ public class Staff_CheckInGUI {
 
 		            @Override
 		            protected void done() {
-		                loadingDialog.dispose(); // close loading dialog
+		                loadingDialog.dispose(); 
 
 		                if (errorMessage != null) {
 		                    JOptionPane.showMessageDialog(frame, errorMessage);

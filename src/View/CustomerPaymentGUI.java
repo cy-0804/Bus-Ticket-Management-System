@@ -64,7 +64,6 @@ public class CustomerPaymentGUI {
         container.setBackground(new Color(130, 182, 234));
         container.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-        // Booking summary
         JPanel bookingInfoPanel = new JPanel(new GridLayout(7, 1, 5, 5));
         bookingInfoPanel.setBackground(new Color(130, 182, 234));
         bookingInfoPanel.add(new JLabel("Origin: " + origin));
@@ -80,7 +79,6 @@ public class CustomerPaymentGUI {
         container.add(bookingInfoPanel);
         container.add(Box.createVerticalStrut(15));
 
-        // Passenger forms
         for (Integer seatID : seatIDs) {
         	PassengerForm pf = new PassengerForm(String.valueOf(seatID), seatIdToNumberMap);
             passengerForms.add(pf);
@@ -88,7 +86,6 @@ public class CustomerPaymentGUI {
             container.add(Box.createVerticalStrut(10));
         }
 
-        // Payment method selection
         JPanel paymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         paymentPanel.setBackground(new Color(130, 182, 234));
         paymentPanel.add(new JLabel("Payment Method: "));
@@ -96,7 +93,6 @@ public class CustomerPaymentGUI {
         paymentPanel.add(paymentMethodBox);
         container.add(paymentPanel);
 
-        // Confirm button
         JButton payButton = new JButton("Pay & Confirm Booking");
         payButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         payButton.setFocusPainted(false);
@@ -168,7 +164,6 @@ public class CustomerPaymentGUI {
             }
             in.close();
 
-            // Parse JSON response
             JSONObject jsonResponse = new JSONObject(response.toString());
 
             if (jsonResponse.getString("status").equalsIgnoreCase("success")) {
@@ -176,16 +171,13 @@ public class CustomerPaymentGUI {
 
                 JOptionPane.showMessageDialog(frame, "Booking successful! Booking ID: " + bookingID);
 
-                // ✅ Fetch booking seats from backend using bookingID
                 List<BookingSeats> seatsList = fetchBookingSeats(bookingID);
 
-                // ✅ Generate PDF ticket
                 String userHome = System.getProperty("user.home");
                 String filePath = userHome + "/Downloads/Ticket.pdf";
                 PDFTicketGenerator.generate(filePath, origin, destination, departDate, arrivalDate,
                                             plateNo, String.format("%.2f", totalPrice), seatsList);
 
-                // ✅ Open the PDF
                 try {
                     if (Desktop.isDesktopSupported()) {
                         Desktop.getDesktop().open(new File(filePath));
@@ -265,18 +257,15 @@ public class CustomerPaymentGUI {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
 
-                // Extract passenger
                 Passenger passenger = new Passenger();
                 passenger.setName(obj.getString("name"));
                 passenger.setGender(obj.getString("gender"));
                 passenger.setTelNo(obj.getString("telNo"));
                 passenger.setAge(obj.getInt("age"));
 
-                // Extract seat
                 Seat seat = new Seat();
                 seat.setSeatNumber(obj.getString("seatNumber"));
 
-                // Create booking seat record
                 BookingSeats bookingSeat = new BookingSeats();
                 bookingSeat.setSeat(seat);
                 bookingSeat.setPassenger(passenger);

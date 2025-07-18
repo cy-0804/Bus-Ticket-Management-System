@@ -29,7 +29,6 @@ public class TripRepository {
         return trips;
     }
 
-    // Get a specific trip by its ID
     public Trip getTripById(int tripId) throws SQLException {
         String sql = "SELECT * FROM trip WHERE id = ?";
         Trip trip = null;

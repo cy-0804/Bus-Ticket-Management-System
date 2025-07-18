@@ -28,7 +28,6 @@ public class PDFTicketGenerator {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            // Title
             Paragraph title = new Paragraph("BUS TICKET")
                     .setTextAlignment(TextAlignment.CENTER)
                     .setFontSize(20)
@@ -36,7 +35,6 @@ public class PDFTicketGenerator {
                     .setMarginBottom(20);
             document.add(title);
 
-            // Trip Information Table
             Table tripTable = new Table(UnitValue.createPercentArray(new float[]{1, 2}))
                     .useAllAvailableWidth()
                     .setBorder(new SolidBorder(1))
@@ -57,7 +55,6 @@ public class PDFTicketGenerator {
 
             document.add(tripTable);
 
-            // Passenger Details Title
             Paragraph passTitle = new Paragraph("Passenger Details")
                     .setBold()
                     .setFontSize(16)
@@ -65,7 +62,6 @@ public class PDFTicketGenerator {
                     .setMarginBottom(10);
             document.add(passTitle);
 
-            // Passenger Info Table
             Table passengerTable = new Table(UnitValue.createPercentArray(new float[]{1, 2, 2, 2, 1}))
                     .useAllAvailableWidth()
                     .setBorder(new SolidBorder(1))
@@ -90,7 +86,6 @@ public class PDFTicketGenerator {
 
             document.add(passengerTable);
 
-            // Footer Note
             Paragraph note = new Paragraph("Please show this ticket at the counter for check-in to retrieve your boarding pass.")
                     .setTextAlignment(TextAlignment.CENTER)
                     .setItalic()

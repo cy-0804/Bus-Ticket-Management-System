@@ -96,7 +96,6 @@ public class StaffPaymentGUI {
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
 
-        // Fetch available seats when GUI loads
         fetchAvailableSeats();
 
         submitButton.addActionListener(e -> {
@@ -107,7 +106,6 @@ public class StaffPaymentGUI {
                 String ageStr = ageField.getText().trim();
                 String method = (String) paymentMethodBox.getSelectedItem();
 
-                // Get selected seats
                 List<Seat> selectedSeats = seatList.getSelectedValuesList();
                 if (selectedSeats.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please select at least one seat.");
@@ -140,7 +138,6 @@ public class StaffPaymentGUI {
                 }
                 json.put("selectedSeats", seatsArray);
 
-                // Send POST request to PHP
                 URL url = new URL("http://localhost/webServiceJSON/confirm_payment.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -184,7 +181,6 @@ public class StaffPaymentGUI {
             }
         });
 
-        // Layout
         GroupLayout layout = new GroupLayout(contentPane);
         contentPane.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -250,7 +246,6 @@ public class StaffPaymentGUI {
         frame.setVisible(true);
     }
 
-    // fetch available seats from PHP
     private void fetchAvailableSeats() {
         new SwingWorker<List<Seat>, Void>() {
             @Override
@@ -313,7 +308,6 @@ public class StaffPaymentGUI {
         }.execute();
     }
 
-    // Selected seat numbers 
     private String getSelectedSeatNumbers(List<Seat> seats) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < seats.size(); i++) {

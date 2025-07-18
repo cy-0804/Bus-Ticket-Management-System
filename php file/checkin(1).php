@@ -1,8 +1,6 @@
 <?php
-//checkin.php
 header("Content-Type: application/json");
 
-// DB connection
 $hostAddr = "localhost";
 $dbName = "bus_ticket_management_system";
 $dbUser = "root";
@@ -14,7 +12,6 @@ if ($dbConn->connect_error) {
     die(json_encode(["status" => "fail", "message" => "Database connection failed: " . $dbConn->connect_error]));
 }
 
-// Decode JSON input
 $data = json_decode(file_get_contents("php://input"), true);
 $booking_id = $data['booking_id'] ?? '';
 
@@ -23,7 +20,6 @@ if (empty($booking_id)) {
     exit;
 }
 
-// Prepare update statement
 $query = "UPDATE booking_seats SET checkin_status = 'checked-in' WHERE bookingID = ?";
 $stmt = $dbConn->prepare($query);
 $stmt->bind_param("s", $booking_id);

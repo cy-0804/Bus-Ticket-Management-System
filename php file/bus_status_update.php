@@ -6,7 +6,6 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL);
 
-// Database connection
 $hostAddr = "localhost";
 $dbName = "bus_ticket_management_system";
 $dbUser = "root";
@@ -39,7 +38,6 @@ if (!in_array(strtolower($status), $allowedStatuses)) {
     exit;
 }
 
-// Update the trip status
 $stmt = $conn->prepare("UPDATE trip SET status = ? WHERE tripID = ?");
 $stmt->bind_param("si", $status, $tripId);
 $stmt->execute();
