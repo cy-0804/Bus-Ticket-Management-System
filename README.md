@@ -180,9 +180,9 @@ Several technologies are applied to the application development:
 | Login | POST | **/**login.php | Handles user authentication where the backend application receives login credentials from the user and validates the credentials. After that, it returns a JSON response indicating login success or failure, along with requested user data. ||
 | Trip Search | GET | /staff_book_ticket.php | When the frontend application makes a fetch trip request, the backend application returns a list of available trips based on the selected destination and departure date. ||
 | Manual Book Ticket | POST | /get_available_seat.php | The backend application will retrieve the number of seats available and their seat number based on the trip the customer chooses. ||
-| POST | /confirm_payment.php | The counter staff will manually enter the customer’s details, their selection of seat, and payment method. These data will be passed to the backend application and will update the database. ||
+|| POST | /confirm_payment.php | The counter staff will manually enter the customer’s details, their selection of seat, and payment method. These data will be passed to the backend application and will update the database. ||
 | Check in walk-in customer | POST | /get_booking_info.php | The counter staff inserts the booking ID of the customer, then the backend application will retrieve the booking details for that particular booking and return to the frontend application. ||
-| POST | /checkin(1).php | Handles the check-in status update upon clicking the “Check-In” button. ||
+|| POST | /checkin(1).php | Handles the check-in status update upon clicking the “Check-In” button. ||
 | View bus schedule | GET | /staff_view_bus.php | The bus details, like bus ID and the departure date, are passed to the backend application. The backend application retrieves the scheduled trip of that bus and returns the related trip details back to the front-end application. ||
 | Update trip status | POST | /bus_status_update.php | Handles the bus status update upon clicking the “Update Status” button. ||
 
