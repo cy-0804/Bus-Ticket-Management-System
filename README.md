@@ -159,7 +159,7 @@ The system uses RESTful APIs developed in PHP to enable communication between cl
 
 | **API ENDPOINT (PHP)** | **HEADER** | **BODY FORMATS/**<br><br>**URL EXAMPLE** |
 | --- | --- | --- |
-| **/**login.php | Content-Type: application/json | json { "username": "aliabu", "password": "pass123" } ||
+| /login.php | Content-Type: application/json | json { "username": "aliabu", "password": "pass123" } ||
 | /BusResponse.php | None | /BusResponse.php?bookingID=BKG001 ||
 | /BookingSeatRequest.php | None | /BookingSeatRequest.php?tripID=TRP001 ||
 | /BookingRequest.php | Content-Type: application/json | json { "tripID": 1, "bookedBy": 1, "paymentMethod": "cash", "totalPrice": 45.0, "passengers": \[{ "name": "Ahmad Nazri", "gender": "male", "telNo": "0123456789", "age": 25, "seatIDs": \[A3\] }\] } ||
