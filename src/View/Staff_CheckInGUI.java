@@ -10,11 +10,13 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 import org.json.JSONObject;
 
@@ -165,138 +167,155 @@ public class Staff_CheckInGUI {
 		});
 
 	    // Print Boarding Pass
-	    btnPrint.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            new Thread(() -> {
-	                try {
-	                    OkHttpClient client = new OkHttpClient();
+		btnPrint.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (checkInData == null) {
+		            JOptionPane.showMessageDialog(frame, "No boarding data to print.");
+		            return;
+		        }
 
-	                    String apiKey = "api_test_sfzZfbZbgXzKJajhk6";
-	                    String apiSecret = "tZZsnM633eSbYn67jD7gDZj7bkcKae977LsAJzZnbt";
-	                    String templateId = "tpl_LecfLcE5gn5hTrXHm9";
+		        // Show loading dialog
+		        JDialog loadingDialog = new JDialog(frame, "Generating PDF...", true);
+		        JLabel loadingLabel = new JLabel("Generating.......");
+		        loadingDialog.add(loadingLabel);
+		        loadingDialog.setSize(350, 100);
+		        loadingDialog.setLocationRelativeTo(frame);
 
-	                    MediaType mediaType = MediaType.parse("application/json");
-	                    if (checkInData == null) {
-	                        JOptionPane.showMessageDialog(null, "No boarding data to print.");
-	                        return;
-	                    }
+		        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+		            private String pdfUrl = null;
+		            private File downloadedFile = null;
+		            private String errorMessage = null;
 
-	                    String passenger = checkInData.optString("passengerName", "N/A");
-	                    String departure = checkInData.optString("departureTime", "N/A");
-	                    String from = checkInData.optString("from", "N/A");
-	                    String to = checkInData.optString("to", "N/A");
-	                    String seat = checkInData.optString("seatNo", "N/A");
-	                    String bus = checkInData.optString("busPlate", "N/A");
-	                    String ticket = checkInData.optString("tripID", "N/A");
+		            @Override
+		            protected Void doInBackground() {
+		                try {
+		                    OkHttpClient client = new OkHttpClient();
 
-	                    String json = "{"
-	                        + "\"data\": {"
-	                        + "\"Passenger\": \"" + passenger + "\","
-	                        + "\"Departure\": \"" + departure + "\","
-	                        + "\"From\": \"" + from + "\","
-	                        + "\"To\": \"" + to + "\","
-	                        + "\"Seat\": \"" + seat + "\","
-	                        + "\"Bus\": \"" + bus + "\","
-	                        + "\"Ticket\": \"" + ticket + "\""
-	                        + "},"
-	                        + "\"test\": true"
-	                        + "}";
+		                    String apiKey = "api_test_sfzZfbZbgXzKJajhk6";
+		                    String apiSecret = "tZZsnM633eSbYn67jD7gDZj7bkcKae977LsAJzZnbt";
+		                    String templateId = "tpl_LecfLcE5gn5hTrXHm9";
 
+		                    MediaType mediaType = MediaType.parse("application/json");
 
-	                    RequestBody body = RequestBody.create(mediaType, json);
-	                    Request request = new Request.Builder()
-	                            .url("https://api.docspring.com/api/v1/templates/" + templateId + "/submissions")
-	                            .post(body)
-	                            .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
-	                            .addHeader("Content-Type", "application/json")
-	                            .build();
+		                    String passenger = checkInData.optString("passengerName", "N/A");
+		                    String departure = checkInData.optString("departureTime", "N/A");
+		                    String from = checkInData.optString("from", "N/A");
+		                    String to = checkInData.optString("to", "N/A");
+		                    String seat = checkInData.optString("seatNo", "N/A");
+		                    String bus = checkInData.optString("busPlate", "N/A");
+		                    String ticket = checkInData.optString("tripID", "N/A");
 
-	                    Response response = client.newCall(request).execute();
-	                    String responseBody = response.body().string();
+		                    String json = "{"
+		                            + "\"data\": {"
+		                            + "\"Passenger\": \"" + passenger + "\","
+		                            + "\"Departure\": \"" + departure + "\","
+		                            + "\"From\": \"" + from + "\","
+		                            + "\"To\": \"" + to + "\","
+		                            + "\"Seat\": \"" + seat + "\","
+		                            + "\"Bus\": \"" + bus + "\","
+		                            + "\"Ticket\": \"" + ticket + "\""
+		                            + "},"
+		                            + "\"test\": true"
+		                            + "}";
 
-	                    JSONObject jsonObject = new JSONObject(responseBody);
-	                    if (!jsonObject.has("submission")) {
-	                        JOptionPane.showMessageDialog(null, "Error: 'submission' not found in response.");
-	                        return;
-	                    }
+		                    RequestBody body = RequestBody.create(mediaType, json);
+		                    Request request = new Request.Builder()
+		                            .url("https://api.docspring.com/api/v1/templates/" + templateId + "/submissions")
+		                            .post(body)
+		                            .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
+		                            .addHeader("Content-Type", "application/json")
+		                            .build();
 
-	                    JSONObject submission = jsonObject.getJSONObject("submission");
-	                    String submissionId = submission.getString("id");
+		                    Response response = client.newCall(request).execute();
+		                    JSONObject submission = new JSONObject(response.body().string()).optJSONObject("submission");
 
-	                    String state = "";
-	                    String pdfUrl = null;
+		                    if (submission == null) {
+		                        errorMessage = "Error: 'submission' not found.";
+		                        return null;
+		                    }
 
-	                    for (int i = 0; i < 10; i++) {
-	                        Request pollRequest = new Request.Builder()
-	                                .url("https://api.docspring.com/api/v1/submissions/" + submissionId)
-	                                .get()
-	                                .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
-	                                .build();
+		                    String submissionId = submission.getString("id");
 
-	                        Response pollResponse = client.newCall(pollRequest).execute();
-	                        String pollBody = pollResponse.body().string();
+		                    for (int i = 0; i < 10; i++) {
+		                        Request pollRequest = new Request.Builder()
+		                                .url("https://api.docspring.com/api/v1/submissions/" + submissionId)
+		                                .get()
+		                                .addHeader("Authorization", Credentials.basic(apiKey, apiSecret))
+		                                .build();
 
-	                        try {
-	                            JSONObject pollSubmission = new JSONObject(pollBody);
+		                        Response pollResponse = client.newCall(pollRequest).execute();
+		                        JSONObject pollSubmission = new JSONObject(pollResponse.body().string());
+		                        String state = pollSubmission.getString("state");
 
-	                            state = pollSubmission.getString("state");
+		                        if (state.equals("success") || state.equals("processed")) {
+		                            pdfUrl = pollSubmission.optString("download_url");
+		                            break;
+		                        } else if (state.equals("failed")) {
+		                            errorMessage = "PDF generation failed.";
+		                            return null;
+		                        }
 
-	                            if (state.equals("success") || state.equals("processed")) {
-	                                pdfUrl = pollSubmission.optString("download_url");
-	                                break;
-	                            } else if (state.equals("failed")) {
-	                                JOptionPane.showMessageDialog(null, "PDF generation failed.");
-	                                return;
-	                            }
+		                        Thread.sleep(1000);
+		                    }
 
-	                        } catch (Exception parseEx) {
-	                            parseEx.printStackTrace();
-	                            JOptionPane.showMessageDialog(null, "Failed to parse poll response:\n" + pollBody);
-	                            return;
-	                        }
+		                    if (pdfUrl != null && !pdfUrl.isEmpty()) {
+		                        Request pdfRequest = new Request.Builder().url(pdfUrl).build();
+		                        Response pdfResponse = client.newCall(pdfRequest).execute();
 
-	                        Thread.sleep(1000);
-	                    }
+		                        if (pdfResponse.isSuccessful()) {
+		                            InputStream inputStream = pdfResponse.body().byteStream();
+		                            downloadedFile = new File("boarding_pass.pdf");
+		                            FileOutputStream outputStream = new FileOutputStream(downloadedFile);
 
-	                    if (pdfUrl != null && !pdfUrl.isEmpty()) {
-	                        Request pdfRequest = new Request.Builder().url(pdfUrl).build();
-	                        Response pdfResponse = client.newCall(pdfRequest).execute();
+		                            byte[] buffer = new byte[4096];
+		                            int bytesRead;
+		                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+		                                outputStream.write(buffer, 0, bytesRead);
+		                            }
 
-	                        if (pdfResponse.isSuccessful()) {
-	                            InputStream inputStream = pdfResponse.body().byteStream();
-	                            File file = new File("boarding_pass.pdf");
-	                            FileOutputStream outputStream = new FileOutputStream(file);
+		                            outputStream.close();
+		                            inputStream.close();
+		                        } else {
+		                            errorMessage = "Failed to download PDF.";
+		                        }
+		                    } else {
+		                        errorMessage = "PDF not ready after polling.";
+		                    }
+		                } catch (Exception ex) {
+		                    ex.printStackTrace();
+		                    errorMessage = "Error during submission or processing.";
+		                }
+		                return null;
+		            }
 
-	                            byte[] buffer = new byte[4096];
-	                            int bytesRead;
-	                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-	                                outputStream.write(buffer, 0, bytesRead);
-	                            }
+		            @Override
+		            protected void done() {
+		                loadingDialog.dispose(); // close loading dialog
 
-	                            outputStream.close();
-	                            inputStream.close();
+		                if (errorMessage != null) {
+		                    JOptionPane.showMessageDialog(frame, errorMessage);
+		                } else if (downloadedFile != null && downloadedFile.exists()) {
+		                    JOptionPane.showMessageDialog(frame, "PDF downloaded successfully!");
 
-	                            JOptionPane.showMessageDialog(null, "PDF downloaded successfully!");
+		                    try {
+		                        if (Desktop.isDesktopSupported()) {
+		                            Desktop.getDesktop().open(downloadedFile);
+		                        } else {
+		                            JOptionPane.showMessageDialog(frame, "Preview not supported on this system.");
+		                        }
+		                    } catch (Exception ex) {
+		                        ex.printStackTrace();
+		                        JOptionPane.showMessageDialog(frame, "Error opening PDF.");
+		                    }
+		                }
+		            }
+		        };
 
-	                            if (Desktop.isDesktopSupported()) {
-	                                Desktop.getDesktop().open(file);
-	                            } else {
-	                                JOptionPane.showMessageDialog(null, "Preview not supported on this system.");
-	                            }
-	                        } else {
-	                            JOptionPane.showMessageDialog(null, "Failed to download PDF.");
-	                        }
-	                    } else {
-	                        JOptionPane.showMessageDialog(null, "PDF not ready after polling.");
-	                    }
+		        worker.execute();
+		        loadingDialog.setVisible(true);
+		    }
+		});
 
-	                } catch (Exception ex) {
-	                    ex.printStackTrace();
-	                    JOptionPane.showMessageDialog(null, "Error during submission or processing.");
-	                }
-	            }).start();
-	        }
-	    });
 
 
 
