@@ -145,7 +145,7 @@ public class CustomerPaymentGUI {
             bookingData.put("totalPrice", totalPrice);
             bookingData.put("bookedBy", userID);
 
-            URL url = new URL("http://localhost/webServiceJSON/BookingRequest.php");
+            URL url = new URL("http://localhost/busApi/BookingRequest.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -240,7 +240,7 @@ public class CustomerPaymentGUI {
         List<BookingSeats> seatsList = new ArrayList<>();
 
         try {
-            URL url = new URL("http://localhost/webServiceJSON/BookingResponse.php?bookingID=" + bookingID);
+            URL url = new URL("http://localhost/busApi/BookingResponse.php?bookingID=" + bookingID);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 

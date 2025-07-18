@@ -103,7 +103,7 @@ public class CustomerViewTicketGUI {
 
     private void fetchTicketList(int userID) {
         try {
-            URL url = new URL("http://localhost/webServiceJSON/TicketResponse.php");
+            URL url = new URL("http://localhost/busApi/TicketResponse.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -191,7 +191,7 @@ public class CustomerViewTicketGUI {
         List<BookingSeats> seatsList = new ArrayList<>();
 
         try {
-            URL url = new URL("http://localhost/webServiceJSON/BookingResponse.php?bookingID=" + bookingID);
+            URL url = new URL("http://localhost/busApi/BookingResponse.php?bookingID=" + bookingID);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 

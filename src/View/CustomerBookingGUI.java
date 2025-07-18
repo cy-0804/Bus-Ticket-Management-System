@@ -62,7 +62,7 @@ public class CustomerBookingGUI {
 
     private void fetchSeatData() {
         try {
-            URL url = new URL("http://localhost/webServiceJSON/BookingSeatRequest.php?tripID=" + tripID);
+            URL url = new URL("http://localhost/busApi/BookingSeatRequest.php?tripID=" + tripID);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 

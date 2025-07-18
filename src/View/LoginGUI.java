@@ -107,7 +107,7 @@ public class LoginGUI {
 	
 	private void loginUser(String username, String password) {
 		try {
-			URL url = new URL("http://localhost/webServiceJSON/login.php");
+			URL url = new URL("http://localhost/busApi/login.php");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json; utf-8");

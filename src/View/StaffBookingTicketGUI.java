@@ -183,7 +183,7 @@ public class StaffBookingTicketGUI {
 		confirmButton.setEnabled(false);
 		selectedTripID = -1; 
 
-		String apiUrl = "http://localhost/webServiceJSON/staff_book_ticket.php?origin="
+		String apiUrl = "http://localhost/busApi/staff_book_ticket.php?origin="
 				+ URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination, "UTF-8")
 				+ "&date=" + URLEncoder.encode(date, "UTF-8");
 

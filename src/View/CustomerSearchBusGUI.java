@@ -133,7 +133,7 @@ public class CustomerSearchBusGUI {
 				}
 
 				try {
-					URL url = new URL("http://localhost/webServiceJSON/BusResponse.php"); 
+					URL url = new URL("http://localhost/busApi/BusResponse.php"); 
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 					conn.setRequestMethod("GET");
 					conn.setRequestProperty("Accept", "application/json");

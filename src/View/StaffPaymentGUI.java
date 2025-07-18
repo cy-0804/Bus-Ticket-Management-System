@@ -138,7 +138,7 @@ public class StaffPaymentGUI {
                 }
                 json.put("selectedSeats", seatsArray);
 
-                URL url = new URL("http://localhost/webServiceJSON/confirm_payment.php");
+                URL url = new URL("http://localhost/busApi/confirm_payment.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");
@@ -252,7 +252,7 @@ public class StaffPaymentGUI {
             protected List<Seat> doInBackground() throws Exception {
                 List<Seat> seats = new ArrayList<>();
                 try {
-                    URL url = new URL("http://localhost/webServiceJSON/get_available_seat.php");
+                    URL url = new URL("http://localhost/busApi/get_available_seat.php");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json");

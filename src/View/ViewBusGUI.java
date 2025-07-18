@@ -103,7 +103,7 @@ public class ViewBusGUI {
 
 	private void loadTripData(String busID, String date) {
 	    try {
-	        URL url = new URL("http://localhost/webServiceJSON/staff_view_bus.php?busID=" + busID + "&date=" + date);
+	        URL url = new URL("http://localhost/busApi/staff_view_bus.php?busID=" + busID + "&date=" + date);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
 
@@ -207,7 +207,7 @@ public class ViewBusGUI {
 	                jsonPayload.put("tripID", tripID);
 	                jsonPayload.put("status", newStatus);
 
-	                URL url = new URL("http://localhost/webServiceJSON/bus_status_update.php");
+	                URL url = new URL("http://localhost/busApi/bus_status_update.php");
 	                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	                conn.setRequestMethod("POST");
 	                conn.setRequestProperty("Content-Type", "application/json");
