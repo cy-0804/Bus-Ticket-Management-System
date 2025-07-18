@@ -101,7 +101,18 @@ The staff can view all scheduled trips for a given bus and date. The system will
 
 ## **Backend Application**
 **Technology Stack**
-**API Documentation**
+
+1. **Programming Language: PHP**
+2. **Database: MySQL**
+3. **Web Server: Apache (via XAMPP)**
+4. **Development Tool: XAMPP**
+5. **Data Format: JSON (for input/output)**
+
+**Api Documentation**
+
+1. **List of API endpoints and HTTP method**
+
+
 
 ## **Frontend Application**
 ## 1. Customer Application
