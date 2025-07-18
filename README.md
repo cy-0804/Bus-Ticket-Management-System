@@ -447,11 +447,15 @@ Below is the system’s use case diagram.
 
 3.  Configure your connection to database. In this project we are using XAMPP. The php file need to be put into the following folder structure : `XAMPP\htdocs\busApi\<php files>.` 
 
+<img width="461" height="490" alt="Screenshot 2025-07-18 225044" src="https://github.com/user-attachments/assets/58726a5d-f0a7-4e35-910c-71e69aec0fa8" />
 
 
 4. Make sure the Apache and MySQL is start in your server.
 
-6. Run the application and you can start to use the application.
+   <img width="808" height="520" alt="image" src="https://github.com/user-attachments/assets/521ad64b-68e7-4162-91c9-c19185871163" />
+
+
+5. Run the application and you can start to use the application.
     
 
 ![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXeEeLa927lr8_CQgVeKxPlOEgd2OqZ8mQeoX-yM52lBCTt_dpid-My6SZV_OaySoZUVJxJMjKdX7ItgyeaVvDOFJaNLmTL3PM5w1UXGNHv5ZXp_oMOn8yKPIQm80Us6RtYBmWtm?key=KxEgPuPIz5T9YTOO2d9d8g)
