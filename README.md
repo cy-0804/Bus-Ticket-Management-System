@@ -298,6 +298,7 @@ The counter staff application serves as the main interface for the counter staff
 A user-friendly and intuitive user interface is developed for each functionality included in the application in order to ensure that staff can perform the operations in a timely manner. The interfaces also appear to be simple yet well structured so that the manual errors can be minimized and help improve the productivity.
 
 **Technology Stack**
+
 Several technologies are applied to the application development:
 | **COMPONENT** | **TECHNOLOGY** |
 | --- | --- |
