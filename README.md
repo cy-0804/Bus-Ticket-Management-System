@@ -100,7 +100,7 @@ The customer selects a trip from the search results, and the available seats wil
 
   
 
-The customer proceeds to payment (this payment function is only the simulated function). Once payment is successful, the backend updates the payment status of the booking. A receipt or ticket (PDF/boarding pass) can be generated and downloaded or emailed.
+The customer can view their tickets from the bookings that they have made. They can select a ticket that they would like to view, and a PDF of the ticket with booking and passenger details will be generated and downloaded.
 
   
   
@@ -117,13 +117,13 @@ A staff member can manually create a booking for walk-in customers by entering t
 
 **2. Passenger Check-In**
 
-The staff enters the booking ID. If the current time is before departure, the booking is  marked as “checked-in”. A boarding pass is generated using DocsSpring API
+The staff enters the booking ID. If the current time is before departure, the booking is  marked as “checked-in”. A boarding pass is generated using DocsSpring API.
 
   
 
 **3. View Bus Schedule**
 
-The staff can view all scheduled trips for a given bus and date. The system will display a list of trips including departure/arrival times and status. Staff can update the bus status. For example, from “scheduled” to “boarding”, “departed”, “delayed”).
+The staff can view all scheduled trips for a given bus and date. The system will display a list of trips including departure/arrival times and status. Staff can update the bus status. For example, from “scheduled” to “boarding”, “departed”, “delayed”.
 
 **Third Party Integration**
 
@@ -458,7 +458,7 @@ They are referenced by table like trip and staff to assign trips to physical loc
 The system supports two types of users: Customer and Staff. Customers can search for buses, make bookings, pay, and view tickets. Staff can assist walk-in customers by making bookings for them, check in passengers, generate boarding passes, and update trip statuses.
 Below is the system’s use case diagram.
 
-<img width="749" height="606" alt="image" src="https://github.com/user-attachments/assets/145fbeda-04f7-4470-bbf1-54d391b823cb" />
+<img width="721" height="602" alt="Screenshot 2025-07-19 144658" src="https://github.com/user-attachments/assets/978dda5a-9896-4d3d-9bc4-a76d586f0c87" />
 
 
 ## User Manual
