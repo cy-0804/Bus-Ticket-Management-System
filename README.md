@@ -227,7 +227,7 @@ Example: $stmt = $dbConn->prepare($sql);
 
 $stmt->bind_param("s", $username);
 
-1. Input Validation
+2. Input Validation
 
 Description: Checks whether required fields like username, password, or booking_id are empty.
 
@@ -235,7 +235,7 @@ Explanation: Prevents null or malformed data from being processed.
 
 Example: if (empty($username)
 
-1. Error Reporting Turned Off
+3. Error Reporting Turned Off
 
 Description: Error messages are suppressed via error_reporting(0) and ini_set().
 
