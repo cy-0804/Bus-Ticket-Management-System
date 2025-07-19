@@ -467,7 +467,9 @@ Below is the system’s use case diagram.
 1.  Download Source File.
     
 
-2.  Import SQL to your database server. In this project we use PhpMy Admin to create database and import. The sql code in in folder db from your downloaded resources.
+2.  Import SQL to your database server.
+   
+    In this project we use PhpMy Admin to create database and import. The sql code is in folder db from your downloaded resources.
     
 
  
@@ -475,7 +477,11 @@ Below is the system’s use case diagram.
 
   
 
-3.  Configure your connection to database. In this project we are using XAMPP. The php file need to be put into the following folder structure : `XAMPP\htdocs\busApi\<php files>.` 
+3.  Configure your connection to database.
+
+    In this project we are using XAMPP. The php file need to be put into the following folder structure : `XAMPP\htdocs\busApi\<php files>.`
+
+    The php files in store in folder php files from your download resources
 
 <img width="461" height="490" alt="Screenshot 2025-07-18 225044" src="https://github.com/user-attachments/assets/58726a5d-f0a7-4e35-910c-71e69aec0fa8" />
 
